@@ -1,0 +1,64 @@
+.bpmn-upload {
+  --bpmn-upload-bg: #4d4d4d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: 100%;
+  padding: 10px;
+  font-size: 11px !important;
+  height: max-content !important;
+  border: none !important;
+  background-color: var(--bpmn-upload-bg) !important;
+  color: var(--bpmn-color-text) !important;
+  &__input {
+    flex: 1;
+    opacity: 0;
+    &:focus {
+      outline: none;
+    }
+  }
+  &__box {
+    position: relative;
+    display: flex;
+    height: 140px;
+    min-height: 140px;
+    min-width: 180px;
+    max-width: 180px;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    border-radius: 5px;
+    background-color: var(--bpmn-color-active);
+    background-image: none;
+    &__title {
+      padding: 10px 0;
+      text-align: center;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    &__icon {
+      user-select: none;
+      touch-action: none;
+    }
+    &--red {
+      background-color: var(--bpmn-red);
+    }
+    &--blue {
+      background-color: var(--bpmn-blue);
+    }
+    &--purple {
+      background-color: var(--bpmn-purple);
+    }
+  }
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #5e5e5e;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+  }
+}

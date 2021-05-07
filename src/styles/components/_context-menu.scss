@@ -1,0 +1,96 @@
+:root {
+  --bpmn-context-menu-width: 180px;
+  --bpmn-context-border-color: rgba(0, 0, 0, .2);
+  --bpmn-context-box-shadow: rgba(0,0,0,0.15);
+  --bpmn-context-color: #2f2f2f;
+  --bpmn-context-font-size: 14px;
+  --bpmn-context-icon-size: 20px;
+}
+
+.bpmn-context-menu {
+  position: absolute;
+  display: none;
+  width: var(--bpmn-context-menu-width);
+  background: white;
+  border-radius: 3px;
+  border: 1px solid var(--bpmn-context-border-color);
+  box-shadow: 0 2px 2px var(--bpmn-context-box-shadow);
+  z-index: 10002;
+  &__item {
+    position: relative;
+    width: 100%;
+    user-select: none;
+    cursor: pointer;
+    &__content {
+      display: flex;
+      align-items: center;
+      padding: 4px 10px;
+      overflow: hidden;
+    }
+    >.bpmn-context-menu {
+      display: none;
+    }
+    &[includeFor=NONE] {
+      display: none;
+    }
+    &[category=NONE] {
+      display: none;
+    }
+    &[forced=TRUE] {
+      display: inherit !important;
+    }
+    &[forced=FALSE] {
+      display: none !important;
+    }
+    span {
+      display: flex;
+      align-items: center;
+      padding-right: 7px;
+      img {
+        width: var(--bpmn-context-icon-size);
+        height: var(--bpmn-context-icon-size);
+      }
+    }
+    p {
+      flex: 1;
+      color: var(--bpmn-context-color);
+      font-size: var(--bpmn-context-font-size);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      text-transform: capitalize;
+      font-weight: 300;
+    }
+    &:hover {
+      background-color: #eee;
+      >.bpmn-context-menu {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        display: inherit;
+      }
+    }
+  }
+  &[hidden=TRUE] {
+    display: none!important;
+  }
+  &[to-left=TRUE] {
+    .bpmn-context-menu__item {
+      &:hover {
+        >.bpmn-context-menu {
+          left: -100%;
+        }
+      }
+    }
+  }
+  &[to-top=TRUE] {
+    .bpmn-context-menu__item {
+      &:hover {
+        >.bpmn-context-menu {
+          top: 100%;
+          transform: translateY(-100%);
+        }
+      }
+    }
+  }
+}

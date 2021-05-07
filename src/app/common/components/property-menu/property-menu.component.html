@@ -1,0 +1,58 @@
+<div class="bpmn-property-menu__header">
+  <a (click)="onBackBtn()">
+    <img src="assets/icons/arrow_back.svg">
+  </a>
+  <p>{{ getTitleType | translate }}</p>
+  <div
+    class="bpmn-property-menu__header__icon"
+    [ngClass]="{'bpmn-property-menu__header__icon--close': !showIcon}"
+    (click)="onBackIconClick()">
+    <img src="assets/icons/settings.svg">
+  </div>
+</div>
+<ng-container *ngIf="!loading">
+  <form [formGroup]="formGroup">
+    <ng-container *ngFor="let controls of elements">
+      <bpmn-toggle
+        [title]="getLabeByCategory(controls[0].category, controls[0].customName || null) | translate"
+        [open]="true">
+        <ng-container *ngFor="let control of controls">
+          <div class="bpmn-form-control">
+            <ng-container *ngIf="control.label">
+              <label class="bpmn-label">
+                {{ control.label | translate }}
+              </label>
+            </ng-container>
+            <ng-container *ngIf="control.type === 'INPUT'">
+              <input
+                type="text"
+                class="bpmn-input"
+                [formControlName]="control.key">
+            </ng-container>
+            <ng-container *ngIf="control.type === 'TEXTAREA'">
+              <textarea
+                class="bpmn-textarea"
+                rows="12"
+                [formControlName]="control.key">
+              </textarea>
+            </ng-container>
+            <ng-container *ngIf="control.type === 'SELECT'">
+              <bpmn-select
+                name="mySelect2"
+                [placeholder]="control.label"
+                [options]="control.options"
+                (change)="onSelectChange($event, control)">
+              </bpmn-select>
+            </ng-container>
+            <ng-container *ngIf="control.type === 'FILE'">
+              <bpmn-upload
+                [preview]="getFileElement(control)"
+                (select)="onUploadFiles($event, control)">
+              </bpmn-upload>
+            </ng-container>
+          </div>
+        </ng-container>
+      </bpmn-toggle>
+    </ng-container>`
+  </form>
+</ng-container>

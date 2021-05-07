@@ -1,0 +1,305 @@
+{
+  "palette": {
+    "event": {
+      "start": "Start Events",
+      "intermediate": "Intermediate \n Events",
+      "end": "End Events",
+      "message": "Message",
+      "timer": "Timer",
+      "escalation": "Escalation",
+      "condition": "Condition",
+      "error": "Error",
+      "compesation": "Compesation",
+      "signal": "Signal",
+      "multiple": "Multiple",
+      "parallel": "Parallel",
+      "cancel": "Cancel",
+      "link": "Link",
+      "termination": "Termination"
+    },
+    "gateway": {
+      "main": "Gateway",
+      "parallel": "Parallel",
+      "inclusive": "Inclusive",
+      "complex": "Complex",
+      "exclusive": "Exclusive",
+      "eventBasedGateway": "Event Based Gateway",
+      "eventBasedStart": "Event Based Start",
+      "eventBasedParallel": "Event Based Parallel",
+      "eventBasedExclusive": "Event Based Exclusive"
+    },
+    "task": {
+      "main": "Activities",
+      "message": "Message",
+      "user": "User",
+      "manual": "Manual",
+      "script": "Script",
+      "sendMessage": "Send Message",
+      "service": "Service",
+      "businessRule": "Business Rule"
+    },
+    "subProcess": {
+      "main": "Subprocess",
+      "transactionalSub": "Transactional Subprocess",
+      "adhocSub": "Ad-hoc Subsprocess",
+      "eventSubprocess": "Event Subprocess",
+      "callActivity": "Call Activity"
+    },
+    "dataObject": {
+      "main": "Data Object",
+      "dataInput": "Data Input",
+      "dataOutput": "Data Output"
+    },
+    "dataWarehousing": {
+      "main": "Data \n Warehousing"
+    },
+    "group": {
+      "main": "Group"
+    },
+    "note": {
+      "main": "Note"
+    },
+    "header": {
+      "main": "Header"
+    },
+    "pool": {
+      "main": "Pool"
+    }
+  },
+  "contextMenu": {
+    "editText": "Edit Text",
+    "attach": "Attachments",
+    "copy": "Copy",
+    "cut": "Cut",
+    "paste": "Paste",
+    "delete": "Delete",
+    "properties": "Properties",
+    "annotation": "Annotation",
+    "align": "Align",
+    "distribute": "Distribute",
+    "convertTo": {
+      "mainText": "Convert to:",
+      "events": {
+        "start": {
+          "simpleStart": "Start Simple",
+          "messageStart": "Start Message",
+          "timerStart": "Start Timer",
+          "conditionalStart": "Start Conditional",
+          "signalStart": "Start Signal",
+          "multipleStart": "Start Multiple",
+          "parallelStart": "Start Parallel"
+        },
+        "intermediate": {
+          "simpleEvent": "Simple Event",
+          "messageEvent": "Message Event",
+          "timerEvent": "Timer Event",
+          "conditionalEvent": "Conditional Event",
+          "signalEvent": "Signal Event",
+          "climbEvent": "Climb Event",
+          "compensationEvent": "Compensation Event",
+          "multipleEvent": "Multiple Event",
+          "parallelEvent": "Parallel Event",
+          "linkEvent": "Link Event"
+        },
+        "end": {
+          "simpleEnd": "Simple End",
+          "messageEnd": "Message End",
+          "alignmentEnd": "Alignment End",
+          "signalEnd": "Signal End",
+          "errorEnd": "Error End",
+          "end": "End",
+          "compensationEnd": "Compensation End",
+          "cancellationEnd": "Cancellation End",
+          "multipleEnd": "Multiple End"
+        }
+      },
+      "gateway": {
+        "exclusiveGateway": "Exclusive Gateway",
+        "parallelGateway": "Parallel",
+        "inclusivePortal": "Inclusive Portal",
+        "basedEventGateway": "Based Event Gateway",
+        "basedEventExclusiveGateway": "Based Event Exclusive Gateway",
+        "basedEventParallelGatweway": "Based Event Parallel Gateway",
+        "complexGateway": "Complex Gateway"
+      },
+      "task": {
+        "simpleTask": "Simple Activity",
+        "serviceTask": "Service Activity",
+        "messageSendTask": "Activity Send Message",
+        "messageReceivedTask": "Activity Message Receiving",
+        "userTask": "User Activity",
+        "manualTask": "Manual Activity",
+        "businessTask": "Business Rule Activity",
+        "scriptTask": "Script Activity",
+        "subprocessTask": "Subprocess Activity"
+      },
+      "subprocess": {
+        "integratedSubprocess": "Integrated Subprocess",
+        "adHocSubprocess": "Ad-hoc Subprocess",
+        "transactionSubprocess": "Transaction Subprocess",
+        "taskSubprocess": "Activity Subprocess",
+        "eventSubprocess": "Event Subprocess",
+        "blucleSubprocess": {
+          "mainText": "Bucle Subprocess",
+          "multipleInstances": "Multiple Instances",
+          "loop": "Loop",
+          "simpleSubprocess": "Simple Subprocess"
+        }
+      },
+      "link": {
+        "regularSequenceConnector": "Regular sequence connector",
+        "standardSequenceConnector": "Standard sequence connector",
+        "conditionalSequenceConnector": "Conditional sequence connector"
+      }
+    },
+    "intanceTask": {
+      "mainText": "Instance of activities",
+      "multipleInstances": "Multiple Instances",
+      "loop": "Loop",
+      "simpleTask": "Simple Activity"
+    },
+    "repeatTask": {
+      "mainText": "Repeat the activity",
+      "many": "N times",
+      "conditional": "Conditional",
+      "simple": "Simple"
+    },
+    "edgeEvent": {
+      "mainText": "Add Edge Event",
+      "compensation": "Compensation",
+      "conditional": "Conditional",
+      "error": "Error",
+      "climb": "Climb",
+      "message": "Message",
+      "multiple": "Multiple",
+      "parallel": "Parallel",
+      "signal": "Signal",
+      "timer": "Timer"
+    },
+    "comment": "",
+    "undo": "Undo",
+    "redo": "Redo",
+    "pool": {
+      "splitInTwoo": "Split in two",
+      "splinInThree": "Split in three",
+      "laneUp": "Lane up",
+      "laneNext": "Lane next"
+    },
+    "alignment": {
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
+    },
+    "distribution": {
+      "horizontal": "Horizontal",
+      "vertical": "Vertical"
+    }
+  },
+  "propertyMenu": {
+    "componentName": "Properties",
+    "componentAttachment": "Attachments",
+    "title": "title",
+    "description": "description",
+    "actor": "actor",
+    "type": "type",
+    "instance": "instances",
+    "approver": "approver",
+    "consulted": "consulted",
+    "informed": "informed",
+    "category": {
+      "general": "general",
+      "event": "Event",
+      "task": "Task",
+      "gateway": "Gateway"
+    }
+  },
+  "tooltip": {
+    "event": {
+      "start": "Start Events",
+      "intermediate": "Intermediate \n Events",
+      "end": "End Events",
+      "border": "Event Border",
+      "message": "Message",
+      "timer": "Timer",
+      "escalation": "Escalation",
+      "condition": "Condition",
+      "error": "Error",
+      "compesation": "Compesation",
+      "signal": "Signal",
+      "multiple": "Multiple",
+      "parallel": "Parallel",
+      "cancel": "Cancel",
+      "link": "Link",
+      "termination": "Termination"
+    },
+    "gateway": {
+      "main": "Gateway",
+      "parallel": "Parallel",
+      "inclusive": "Inclusive",
+      "complex": "Complex",
+      "exclusive": "Exclusive",
+      "eventBasedGateway": "Event Based Gateway",
+      "eventBasedStart": "Event Based Start",
+      "eventBasedParallel": "Event Based Parallel",
+      "eventBasedExclusive": "Event Based Exclusive"
+    },
+    "task": {
+      "main": "Activities",
+      "message": "Message",
+      "user": "User",
+      "manual": "Manual",
+      "script": "Script",
+      "sendMessage": "Send Message",
+      "service": "Service",
+      "businessRule": "Business Rule"
+    },
+    "subProcess": {
+      "main": "Subprocess",
+      "transactionalSub": "Transactional Subprocess",
+      "adhocSub": "Ad-hoc Subsprocess",
+      "eventSubprocess": "Event Subprocess",
+      "callActivity": "Call Activity"
+    },
+    "dataObject": {
+      "main": "Data Object",
+      "dataInput": "Data Input",
+      "dataOutput": "Data Output"
+    },
+    "dataWarehousing": {
+      "main": "Data \n Warehousing"
+    },
+    "group": {
+      "main": "Group"
+    },
+    "note": {
+      "main": "Note"
+    },
+    "header": {
+      "main": "Header"
+    },
+    "pool": {
+      "main": "Pool",
+      "div2": "Pool div 2",
+      "div3": "Pool div 3"
+    },
+    "lane": {
+      "main": "Lane",
+      "up": "Lane up",
+      "down": "Lane Down"
+    },
+    "delete": {
+      "main": "Delete"
+    },
+    "properties": {
+      "main": "Properties"
+    },
+    "conversion": {
+      "main": "Conversion"
+    },
+    "conector": {
+      "main": "Conect"
+    }
+  },
+  "dropzone": {
+    "dropFile": "Drop files or click to upload"
+  }
+}

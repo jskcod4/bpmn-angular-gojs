@@ -1,0 +1,27 @@
+<ngx-dropzone
+  class="bpmn-upload"
+  (change)="onSelect($event)">
+  <ng-container *ngIf="showPlaceholder">
+    <div class="bpmn-upload__placeholder">
+      {{ 'dropzone.dropFile' | translate }}
+    </div>
+  </ng-container>
+  <ng-container *ngFor="let file of getFiles; let i = index">
+    <div
+      class="bpmn-upload__box"
+      [ngClass]="getBoxClass(file)"
+      (click)="onPreviewClick($event, i)">
+      <img class="bpmn-upload__box__icon" src="assets/icons/file-w.svg">
+    </div>
+    <div class="bpmn-upload__box__title">
+      {{ file.name }} ({{ file.type }})
+    </div>
+    <ng-container *ngIf="showOptions(i)">
+      <bpmn-upload-option
+        (download)="onFileDownload(file)"
+        (preview)="onFilePreview(file)"
+        (delete)="onFileDelete(file)">
+      </bpmn-upload-option>
+    </ng-container>
+  </ng-container>
+</ngx-dropzone>

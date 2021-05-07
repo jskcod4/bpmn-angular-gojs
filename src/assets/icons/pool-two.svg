@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Grupo_1" data-name="Grupo 1" transform="translate(-49 -62)">
+    <g id="Rectángulo_1" data-name="Rectángulo 1" transform="translate(49 62)" fill="#fff" stroke="#000" stroke-width="1">
+      <rect width="24" height="24" stroke="none"/>
+      <rect x="0.5" y="0.5" width="23" height="23" fill="none"/>
+    </g>
+    <line id="Línea_1" data-name="Línea 1" x2="23" transform="translate(49.5 74.5)" fill="none" stroke="#000" stroke-width="1"/>
+    <line id="Línea_2" data-name="Línea 2" y2="23" transform="translate(53.5 62.5)" fill="none" stroke="#000" stroke-width="1"/>
+  </g>
+</svg>

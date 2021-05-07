@@ -1,0 +1,31 @@
+:root {
+  --bpmn-palette-width: 100px;
+  --bpmn-hover-palette-width: 300px;
+}
+
+.palette {
+  min-height: 100vh;
+  width: var(--bpmn-palette-width);
+  background-color: var(--bpmn-bg-dark, #5e5e5e);
+  overflow: hidden;
+  &--hover {
+    display: none;
+    min-height: 400px;
+    width: var(--bpmn-hover-palette-width, 200px);
+    opacity: 0;
+    overflow: hidden;
+  }
+  &--open {
+    display: flex;
+    animation: show .1s ease-in forwards;
+  }
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

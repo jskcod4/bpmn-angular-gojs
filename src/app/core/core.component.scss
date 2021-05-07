@@ -1,0 +1,17 @@
+:host-context(.only-read) ::ng-deep .bpmn-property-menu {
+  pointer-events: none;
+  display: none;
+}
+
+:host-context(.only-read) ::ng-deep .bpmn-context-menu {
+  pointer-events: none;
+  display: none !important;
+}
+
+::ng-deep {
+  .palette {
+    & > div {
+      overflow: hidden !important;
+    }
+  }
+}

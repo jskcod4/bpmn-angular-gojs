@@ -1,0 +1,70 @@
+<ng-container *ngFor="let item of list">
+  <ng-container *ngIf="showItem(item)">
+    <div
+      class="bpmn-context-menu__item"
+      [attr.includeFor]="setIncludeFor(item)"
+      [attr.category]="item.category ? item.category : 'NONE'"
+      [attr.subCategory]="item.subCategory ? item.subCategory : 'NONE'"
+      (click)="onItemClick(item)">
+      <div [title]="item.label | translate" class="bpmn-context-menu__item__content">
+        <span>
+          <ng-container *ngIf="item.iconType === 'svg'">
+            <img [src]="'assets/icons/' + item.icon">
+          </ng-container>
+        </span>
+        <p>{{ item.label | translate }}</p>
+        <ng-container *ngIf="item.childrens">
+          <img src="assets/icons/keyboard_arrow_right.svg">
+        </ng-container>
+      </div>
+      <!-- level twoo -->
+      <ng-container *ngIf="item.childrens">
+        <div class="bpmn-context-menu">
+          <ng-container *ngFor="let children of item.childrens">
+            <div
+              class="bpmn-context-menu__item"
+              [attr.includeFor]="setIncludeFor(children)"
+              [attr.category]="children.category ? children.category : 'NONE'"
+              [attr.subCategory]="children.subCategory ? children.subCategory : 'NONE'"
+              (click)="onItemClick(children)">
+              <div [title]="children.label | translate" class="bpmn-context-menu__item__content">
+                <span>
+                  <ng-container *ngIf="children.iconType === 'svg'">
+                    <img [src]="'assets/icons/' + children.icon">
+                  </ng-container>
+                </span>
+                <p>{{ children.label | translate }}</p>
+                <ng-container *ngIf="children.childrens">
+                  <img src="assets/icons/keyboard_arrow_right.svg">
+                </ng-container>
+              </div>
+              <!-- level three -->
+              <ng-container *ngIf="children.childrens">
+                <div class="bpmn-context-menu">
+                  <ng-container *ngFor="let element of children.childrens">
+                    <div
+                      class="bpmn-context-menu__item"
+                      [attr.category]="element.category ? element.category : 'NONE'"
+                      [attr.subCategory]="element.subCategory ? element.subCategory : 'NONE'"
+                      (click)="onItemClick(element)">
+                      <div [title]="element.label | translate" class="bpmn-context-menu__item__content">
+                        <span>
+                          <ng-container *ngIf="element.iconType === 'svg'">
+                            <img [src]="'assets/icons/' + element.icon">
+                          </ng-container>
+                        </span>
+                        <p>{{ element.label | translate }}</p>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </ng-container>
+              <!-- level three -->
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+      <!-- level twoo -->
+    </div>
+  </ng-container>
+</ng-container>

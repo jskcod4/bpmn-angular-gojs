@@ -1,0 +1,42 @@
+.is-hidden {
+  display: none
+}
+
+.show {
+  display: inherit;
+}
+
+:host ::ng-deep {
+  .mat-accent .mat-slider-thumb{
+    border: 1px solid #D9D9D9;
+    background: #FFF;
+    color: #D9D9D9;
+    box-shadow: inset 0 0 1px #FFF, inset 0 1px 7px #EBEBEB, 0 3px 6px -3px #BBB;
+  }
+  .mat-accent .mat-slider-thumb-label,
+  .mat-accent .mat-slider-track-fill {
+    background: var(--bpmn-bg-dark);
+  }
+}
+
+:host ::ng-deep nouislider {
+  margin: 0;
+}
+
+:host ::ng-deep nouislider .noUi-target {
+  margin: 0;
+  box-shadow: none !important;
+}
+
+:host ::ng-deep nouislider .noUi-horizontal .noUi-handle {
+  --bpmn-control-width: 18px;
+  width: var(--bpmn-control-width);
+  height: 28px;
+  left: -calc(var(--bpmn-control-width) / 2);
+  top: -6px;
+  margin: 0;
+  box-shadow: none !important;
+  &::before, &::after {
+    content: none;
+  }
+}

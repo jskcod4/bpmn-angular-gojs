@@ -1,0 +1,178 @@
+.bpmn-property-menu {
+  --bpmn-property-bg: #6b6b6b;
+  --bpmn-property-bg-body: #5e5e5e;
+  --bpmn-animation-delay: var(--bpmn-menu-delay);
+  --bpmn-property-width: var(--bpmn-menu-width);
+  --bpmn-property-padding: 15px;
+  --bpmn-header-height: 51px;
+  --bpmn-color-text: #f2f0e6;
+  --bpmn-property-menu-active: #f7ae29;
+  position: absolute;
+  height: 100%;
+  right: 0;
+  width: var(--bpmn-property-width);
+  background-color: var(--bpmn-property-bg);
+  transform: translateX(100%);
+  animation: propertyOut var(--bpmn-animation-delay) ease-out forwards;
+  z-index: 10;
+  &--open {
+    animation: propertyIn var(--bpmn-animation-delay) ease-in forwards;
+  }
+  &__header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    align-items: center;
+    justify-items: center;
+    height: var(--bpmn-header-height);
+    color: var(--bpmn-color-text);
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0 var(--bpmn-property-padding);
+    a {
+      cursor: pointer;
+    }
+    p {
+      width: 100%;
+      font-weight: 500;
+    }
+    &__icon {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: red;
+      left: 0;
+      cursor: pointer;
+      padding: 20px;
+      text-align: center;
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+      background-color: var(--bpmn-bg-dark, #5e5e5e);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      animation: calc(var(--bpmn-animation-delay) * 2) iconIn forwards;
+      z-index: 8;
+      img {
+        width: 24px;
+      }
+      &--close {
+        animation: var(--bpmn-animation-delay) iconOut forwards;
+      }
+    }
+  }
+  &__body {
+    padding: var(--bpmn-property-padding);
+    .bpmn-form-control {
+      &:first-child {
+        padding-top: 0;
+      }
+      &:last-child {
+        padding-bottom: 0;
+      }
+    }
+  }
+}
+
+.bpmn-property-toggle {
+  overflow: hidden;
+  color: var(--bpmn-color-text);
+  &__header {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: var(--bpmn-property-padding);
+    cursor: pointer;
+    &__title {
+      flex: 1;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      overflow: hidden;
+      white-space: nowrap;
+      user-select: none;
+      font-weight: 500;
+    }
+    .arrow {
+      fill: var(--bpmn-color-text);
+    }
+  }
+  &__body {
+    background-color: #5e5e5e;
+    overflow: hidden;
+    word-break: break-word;
+    transition: max-height 0.4s ease-out;
+    height:auto;
+    max-height:0;
+    &__wrapper {
+      padding: var(--bpmn-property-padding);
+      width: 100%;
+    }
+  }
+  &--active {
+    .bpmn-property-toggle__header {
+      color: var(--bpmn-property-menu-active);
+      .arrow {
+        fill: var(--bpmn-property-menu-active);
+      }
+    }
+    .bpmn-property-toggle__body {
+      max-height: 800px;
+      overflow: hidden;
+      overflow-y: auto;
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: transparent;
+      }
+      &::-webkit-scrollbar {
+        width: 10px;
+        background-color: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 15px;
+        background-color: rgb(66, 66, 66);
+      }
+    }
+  }
+  .bpmn-property-toggle__header {
+    border-bottom: 2px solid var(--bpmn-property-bg-body);
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+@keyframes propertyIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes propertyOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes iconIn {
+  from {
+    transform: translate(800%, 100%);
+  }
+  to {
+    transform: translate(-100%, 100%);
+  }
+}
+
+@keyframes iconOut {
+  from {
+    transform: translate(-100%, 100%);
+  }
+  to {
+    transform: translate(800%, 100%);
+    opacity: 0;
+  }
+}
