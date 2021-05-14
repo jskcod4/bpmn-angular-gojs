@@ -10,7 +10,7 @@ export class BpmnEventBus {
   emit(eventName: BpmnEventType, data: any) {
     const event = this.events[eventName];
     if (event) {
-      event.forEach(fn => {
+      event.forEach((fn) => {
         fn.call(null, data);
       });
     }
@@ -22,8 +22,10 @@ export class BpmnEventBus {
     }
     this.events[eventName].push(fn);
     return () => {
-      this.events[eventName] = this.events[eventName].filter(eventFn => fn !== eventFn);
-    }
+      this.events[eventName] = this.events[eventName].filter(
+        (eventFn) => fn !== eventFn
+      );
+    };
   }
 
   unSubscribe(eventName: BpmnEventType) {

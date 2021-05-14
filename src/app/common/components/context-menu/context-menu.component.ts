@@ -1,17 +1,23 @@
-import { Component, OnInit, HostBinding, Input, EventEmitter } from '@angular/core';
-import { BpmnContextMenu } from './common/context.menu.interface';
-import { BpmnGlobal } from '../../services/bpmn.global';
-import { BpmnEventType } from '../../bpmn/common/bpmn.enum';
-import { BpmnContextMenuType } from '../../bpmn/menu-context';
+import {
+  Component,
+  OnInit,
+  HostBinding,
+  Input,
+  EventEmitter,
+} from "@angular/core";
+import { BpmnContextMenu } from "./common/context.menu.interface";
+import { BpmnGlobal } from "../../services/bpmn.global";
+import { BpmnEventType } from "../../bpmn/common/bpmn.enum";
+import { BpmnContextMenuType } from "../../bpmn/menu-context";
 
 @Component({
-  selector: 'bpmn-context-menu',
-  templateUrl: './context-menu.component.html',
-  styleUrls: ['./context-menu.component.scss']
+  selector: "bpmn-context-menu",
+  templateUrl: "./context-menu.component.html",
+  styleUrls: ["./context-menu.component.scss"],
 })
 export class ContextMenuComponent implements OnInit {
-  @HostBinding('class.bpmn-context-menu') mainClass: boolean = true;
-  @HostBinding('style.display') display: string = '';
+  @HostBinding("class.bpmn-context-menu") mainClass: boolean = true;
+  @HostBinding("style.display") display: string = "";
 
   @Input() set items(elements: BpmnContextMenu[]) {
     this.list = elements;
@@ -21,7 +27,7 @@ export class ContextMenuComponent implements OnInit {
 
   list: BpmnContextMenu[] = [];
 
-  constructor(private globalService: BpmnGlobal) { }
+  constructor(private globalService: BpmnGlobal) {}
 
   ngOnInit() {}
 
@@ -34,9 +40,9 @@ export class ContextMenuComponent implements OnInit {
 
   setIncludeFor(item: BpmnContextMenu): string {
     if (!item.includeFor) {
-      return 'NONE';
+      return "NONE";
     }
-    return item.includeFor.join('-');
+    return item.includeFor.join("-");
   }
 
   showItem(item: BpmnContextMenu): boolean {
@@ -73,9 +79,15 @@ export class ContextMenuComponent implements OnInit {
 
     if (selectedElements > 1) {
       if (this.isSameGroup()) {
-        return this.showOnMultiselect(<BpmnContextMenuType>item.type, selectedElements);
+        return this.showOnMultiselect(
+          <BpmnContextMenuType>item.type,
+          selectedElements
+        );
       } else {
-        return this.showOnMultiselect(<BpmnContextMenuType>item.type, selectedElements);
+        return this.showOnMultiselect(
+          <BpmnContextMenuType>item.type,
+          selectedElements
+        );
       }
     }
     return false;
@@ -87,7 +99,7 @@ export class ContextMenuComponent implements OnInit {
     if (!selection) {
       return true;
     }
-    const groups = dataArray.filter(item => item.group === selection.key);
+    const groups = dataArray.filter((item) => item.group === selection.key);
     if (groups.length >= lanes) {
       return false;
     }
@@ -115,7 +127,10 @@ export class ContextMenuComponent implements OnInit {
     return isSameGroup;
   }
 
-  private showOnMultiselect(item: BpmnContextMenuType, selectedElements: number): boolean {
+  private showOnMultiselect(
+    item: BpmnContextMenuType,
+    selectedElements: number
+  ): boolean {
     let show: boolean = false;
     switch (item) {
       case BpmnContextMenuType.copy:

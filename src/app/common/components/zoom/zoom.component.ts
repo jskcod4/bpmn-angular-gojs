@@ -1,28 +1,38 @@
-import { Component, OnInit, HostBinding, Input, HostListener, OnDestroy } from '@angular/core';
-import { MatSliderChange } from '@angular/material/slider';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { BpmnGlobal } from '../../services/bpmn.global';
-import { BpmnEventType } from '../../bpmn/common/bpmn.enum';
-import { Subscription } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  HostBinding,
+  Input,
+  HostListener,
+  OnDestroy,
+} from "@angular/core";
+
+import { MatSliderChange } from "@angular/material/slider";
+import { FormBuilder, FormControl } from "@angular/forms";
+import { Subscription } from "rxjs";
+
+import { BpmnGlobal } from "../../services/bpmn.global";
+import { BpmnEventType } from "../../bpmn/common/bpmn.enum";
 
 @Component({
-  selector: 'bpmn-zoom',
-  templateUrl: './zoom.component.html',
-  styleUrls: ['./zoom.component.scss']
+  selector: "bpmn-zoom",
+  templateUrl: "./zoom.component.html",
+  styleUrls: ["./zoom.component.scss"],
 })
 export class ZoomComponent implements OnInit, OnDestroy {
-  @HostBinding('class.wrapper-zoom') wrapperDiv: boolean = true;
-  @HostBinding('class.wrapper-zoom--bottom-right') positionBottomRight: boolean = true;
-  @HostBinding('class.wrapper-zoom--collapsed') isCollapsed: boolean = true;
-  @HostBinding('class.wrapper-zoom--left-in') leftIn: boolean = false;
-  @HostBinding('class.wrapper-zoom--left-out') leftOut: boolean = false;
+  @HostBinding("class.wrapper-zoom") wrapperDiv: boolean = true;
+  @HostBinding("class.wrapper-zoom--bottom-right")
+  positionBottomRight: boolean = true;
+  @HostBinding("class.wrapper-zoom--collapsed") isCollapsed: boolean = true;
+  @HostBinding("class.wrapper-zoom--left-in") leftIn: boolean = false;
+  @HostBinding("class.wrapper-zoom--left-out") leftOut: boolean = false;
 
   @Input() open: boolean = true;
   @Input() zoomMax: number = 2;
-  @Input() zoomMin: number = 0.30;
+  @Input() zoomMin: number = 0.3;
   @Input() zoomStep: number = 0.01;
   @Input() value: number = 1;
-  @Input() useElement: 'material' | 'nouslider' = 'nouslider';
+  @Input() useElement: "material" | "nouslider" = "nouslider";
   @Input() set isMinimized(value: boolean) {
     if (value) {
       this.open = !value;
@@ -37,26 +47,25 @@ export class ZoomComponent implements OnInit, OnDestroy {
   subBeforeMenuClose: Subscription;
 
   get useMaterial() {
-    return this.useElement === 'material';
+    return this.useElement === "material";
   }
 
-  constructor(
-    private bpmnGlobal: BpmnGlobal,
-    private fb: FormBuilder
-  ) {
+  constructor(private bpmnGlobal: BpmnGlobal, private fb: FormBuilder) {
     this.sliderControl = this.fb.control(this.value);
   }
 
   ngOnInit() {
     this.bindingValue = this.value;
-    this.subBeforeMenuOpen = this.bpmnGlobal.propertyMenuRef.instance.beforeOpen.subscribe(() => {
-      this.leftIn = true;
-      this.leftOut = false;
-    });
-    this.subBeforeMenuClose = this.bpmnGlobal.propertyMenuRef.instance.beforeClose.subscribe(() => {
-      this.leftOut = true;
-      this.leftIn = false;
-    });
+    this.subBeforeMenuOpen =
+      this.bpmnGlobal.propertyMenuRef.instance.beforeOpen.subscribe(() => {
+        this.leftIn = true;
+        this.leftOut = false;
+      });
+    this.subBeforeMenuClose =
+      this.bpmnGlobal.propertyMenuRef.instance.beforeClose.subscribe(() => {
+        this.leftOut = true;
+        this.leftIn = false;
+      });
   }
 
   ngOnDestroy() {
@@ -68,7 +77,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener("click", ["$event"])
   onClick(e: MouseEvent) {
     this.bpmnGlobal.eventBus.emit(BpmnEventType.overviewClick, () => {});
   }
@@ -76,13 +85,13 @@ export class ZoomComponent implements OnInit, OnDestroy {
   onArrowDown(): void {
     this.isCollapsed = true;
     this.open = false;
-    this.setZoom(this.bindingValue + (this.zoomStep / 4));
+    this.setZoom(this.bindingValue + this.zoomStep / 4);
   }
 
   onArrowUp(): void {
     this.isCollapsed = false;
     this.open = true;
-    this.setZoom(this.bindingValue - (this.zoomStep / 4));
+    this.setZoom(this.bindingValue - this.zoomStep / 4);
   }
 
   onSliderInput(evt: MatSliderChange) {
@@ -105,7 +114,7 @@ export class ZoomComponent implements OnInit, OnDestroy {
   private setZoom(newZoom: number): void {
     this.bpmnGlobal.overviewInstance.scale = newZoom;
     this.bpmnGlobal.diagramInstance.scale = newZoom;
-    if (this.useElement === 'material') {
+    if (this.useElement === "material") {
       this.bindingValue = newZoom;
     } else {
       if (this.timerNouSlider) {
@@ -116,5 +125,4 @@ export class ZoomComponent implements OnInit, OnDestroy {
       }, 200);
     }
   }
-
 }

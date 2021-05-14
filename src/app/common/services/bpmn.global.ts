@@ -1,17 +1,31 @@
-import { Injectable, ComponentFactoryResolver, ComponentRef, Injector, Inject, ApplicationRef } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { Observable } from 'rxjs';
-import * as go from 'gojs';
+import {
+  Injectable,
+  ComponentFactoryResolver,
+  ComponentRef,
+  Injector,
+  Inject,
+  ApplicationRef,
+} from "@angular/core";
 
-import { BpmnEventBus } from '../data/bpmn.class';
-import {BpmnSource, BpmnData, BpmnDataFileStorage} from '../bpmn/common/bpmn.interface';
-import { PropertyMenuComponent } from '../components/property-menu/property-menu.component';
-import { BpmnEventType } from '../bpmn/common/bpmn.enum';
-import { PaletteCategory } from '../bpmn/palette/palette.enum';
-import {BpmnAttachmentStorage} from '../components/property-menu/common';
+import { DOCUMENT } from "@angular/common";
+import { Observable } from "rxjs";
+import * as go from "gojs";
+
+import { BpmnEventBus } from "../data/bpmn.class";
+
+import {
+  BpmnSource,
+  BpmnData,
+  BpmnDataFileStorage,
+} from "../bpmn/common/bpmn.interface";
+
+import { PropertyMenuComponent } from "../components/property-menu/property-menu.component";
+import { BpmnEventType } from "../bpmn/common/bpmn.enum";
+import { PaletteCategory } from "../bpmn/palette/palette.enum";
+import { BpmnAttachmentStorage } from "../components/property-menu/common";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class BpmnGlobal extends BpmnAttachmentStorage {
   /**
@@ -40,9 +54,9 @@ export class BpmnGlobal extends BpmnAttachmentStorage {
    */
   diagramData: BpmnData = {
     category: PaletteCategory.diagram,
-    text: '',
+    text: "",
     key: 999,
-    loc: ''
+    loc: "",
   };
   /**
    * onlyRead mode
@@ -63,25 +77,29 @@ export class BpmnGlobal extends BpmnAttachmentStorage {
     if (this.isPropertyMenuCreated()) {
       return;
     }
-    const factory = this.resolver.resolveComponentFactory(PropertyMenuComponent);
+    const factory = this.resolver.resolveComponentFactory(
+      PropertyMenuComponent
+    );
     this.propertyMenuRef = factory.create(this.injector);
     this.applicationRef.attachView(this.propertyMenuRef.hostView);
-    this.document.body.querySelectorAll('app-root')[0].appendChild(this.propertyMenuRef.location.nativeElement);
+    this.document.body
+      .querySelectorAll("app-root")[0]
+      .appendChild(this.propertyMenuRef.location.nativeElement);
   }
 
   public openMenu(): Observable<boolean> {
-    return new Observable(observable => {
+    return new Observable((observable) => {
       this.propertyMenuRef.instance.opened = true;
-      this.propertyMenuRef.instance.open.subscribe(data => {
+      this.propertyMenuRef.instance.open.subscribe((data) => {
         observable.next(data);
       });
     });
   }
 
   public closeMenu(): Observable<boolean> {
-    return new Observable(observable => {
+    return new Observable((observable) => {
       this.propertyMenuRef.instance.opened = false;
-      this.propertyMenuRef.instance.close.subscribe(data => {
+      this.propertyMenuRef.instance.close.subscribe((data) => {
         observable.next(data);
       });
     });
@@ -91,7 +109,9 @@ export class BpmnGlobal extends BpmnAttachmentStorage {
     return !!this.propertyMenuRef;
   }
 
-  public storageAttachmentFiles(bpmnDataFileStorage: BpmnDataFileStorage): void {
+  public storageAttachmentFiles(
+    bpmnDataFileStorage: BpmnDataFileStorage
+  ): void {
     super.storageAttachmentFiles(bpmnDataFileStorage);
   }
 
@@ -106,5 +126,4 @@ export class BpmnGlobal extends BpmnAttachmentStorage {
   public getGeneralFiles(category: PaletteCategory): BpmnDataFileStorage {
     return super.getGeneralFiles(category);
   }
-
 }

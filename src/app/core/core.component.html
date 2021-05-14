@@ -3,18 +3,12 @@
   <div
     id="hover-palette"
     class="palette palette--hover"
-    [ngClass]="{'palette--open': openPaletteSidebar}"
-    [ngStyle]="{'top': topPaletteSidebar + 'px'}">
-  </div>
+    [ngClass]="{ 'palette--open': openPaletteSidebar }"
+    [ngStyle]="{ top: topPaletteSidebar + 'px' }"
+  ></div>
 </div>
-<div id="myDiagramDiv" class="diagram">
-</div>
+<div id="myDiagramDiv" class="diagram"></div>
 <bpmn-zoom [isMinimized]="true">
-  <div
-    id="myOverviewDiv"
-    class="zoom-main__element">
-  </div>
+  <div id="myOverviewDiv" class="zoom-main__element"></div>
 </bpmn-zoom>
-<bpmn-context-menu
-  [items]="diagramContextMenu">
-</bpmn-context-menu>
+<bpmn-context-menu [items]="diagramContextMenu"> </bpmn-context-menu>

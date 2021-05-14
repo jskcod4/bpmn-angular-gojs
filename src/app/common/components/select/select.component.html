@@ -1,23 +1,23 @@
-<div
-  class="bpmn-select"
-  (click)="onSelectClick()">
+<div class="bpmn-select" (click)="onSelectClick()">
   <p>{{ getActiveElement | translate }}</p>
   <ng-container *ngIf="!menuListActivate">
-    <img src="assets/icons/arrow_drop_down_alt.svg" alt="">
+    <img src="assets/icons/arrow_drop_down_alt.svg" alt="" />
   </ng-container>
   <ng-container *ngIf="menuListActivate">
-    <img src="assets/icons/arrow_drop_up_alt.svg" alt="">
+    <img src="assets/icons/arrow_drop_up_alt.svg" alt="" />
   </ng-container>
 </div>
 <ng-container *ngIf="menuListActivate">
   <div
     class="bpmn-select-list"
-    [ngClass]="{'bpmn-select-list--hidden': !menuListActivate}">
+    [ngClass]="{ 'bpmn-select-list--hidden': !menuListActivate }"
+  >
     <ng-container *ngFor="let option of options; let i = index">
       <div
         class="bpmn-select-item"
-        [ngClass]="{'bpmn-select-item--active': option.active}"
-        (click)="onSelectItem(i)">
+        [ngClass]="{ 'bpmn-select-item--active': option.active }"
+        (click)="onSelectItem(i)"
+      >
         {{ option.label | translate }}
       </div>
     </ng-container>

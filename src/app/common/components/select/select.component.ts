@@ -1,8 +1,17 @@
-import {Component, OnInit, HostBinding, Input, Output, EventEmitter, Inject, Renderer2} from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { BpmnGlobal } from '../../services/bpmn.global';
-import { BpmnEventType } from '../../bpmn/common/bpmn.enum';
-import {DOCUMENT} from '@angular/common';
+import {
+  Component,
+  OnInit,
+  HostBinding,
+  Input,
+  Output,
+  EventEmitter,
+  Inject,
+  Renderer2,
+} from "@angular/core";
+import { AbstractControl } from "@angular/forms";
+import { BpmnGlobal } from "../../services/bpmn.global";
+import { BpmnEventType } from "../../bpmn/common/bpmn.enum";
+import { DOCUMENT } from "@angular/common";
 
 export interface BpmnSelectItem {
   label: string;
@@ -11,19 +20,19 @@ export interface BpmnSelectItem {
 }
 
 @Component({
-  selector: 'bpmn-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss']
+  selector: "bpmn-select",
+  templateUrl: "./select.component.html",
+  styleUrls: ["./select.component.scss"],
 })
 export class SelectComponent implements OnInit {
-  @HostBinding('class.bpmn-select-wrapper') hostClass = true;
+  @HostBinding("class.bpmn-select-wrapper") hostClass = true;
 
   @Input() formControl: AbstractControl;
-  @Input() placeholder = '';
+  @Input() placeholder = "";
   @Input() options: BpmnSelectItem[] = [];
   @Input() activate: number;
   @Input() menuListActivate = false;
-  @Input() name = '';
+  @Input() name = "";
 
   @Output() change = new EventEmitter<BpmnSelectItem[]>();
 
@@ -35,23 +44,26 @@ export class SelectComponent implements OnInit {
 
   get getActiveElement(): string {
     const options = this.options;
-    const element = options.filter(item => item.active).shift();
+    const element = options.filter((item) => item.active).shift();
     if (element) {
       return element.label;
     }
     if (this.placeholder) {
       return this.placeholder;
     }
-    return '';
+    return "";
   }
 
   ngOnInit() {
     this.watchOutsideClick();
-    this.globalService.eventBus.subscribe(BpmnEventType.selectClicked, (id: string) => {
-      if (id !== this.name) {
-        this.menuListActivate = false;
+    this.globalService.eventBus.subscribe(
+      BpmnEventType.selectClicked,
+      (id: string) => {
+        if (id !== this.name) {
+          this.menuListActivate = false;
+        }
       }
-    });
+    );
   }
 
   closeSelectedList() {
@@ -61,9 +73,9 @@ export class SelectComponent implements OnInit {
   }
 
   onSelectClick() {
-    const selectList = this.document.querySelectorAll('.bpmn-select-list');
-    selectList.forEach(select => {
-      this.render.addClass(select, 'bpmn-select-list--hidden');
+    const selectList = this.document.querySelectorAll(".bpmn-select-list");
+    selectList.forEach((select) => {
+      this.render.addClass(select, "bpmn-select-list--hidden");
     });
     this.menuListActivate = !this.menuListActivate;
     if (this.menuListActivate) {
@@ -77,7 +89,7 @@ export class SelectComponent implements OnInit {
       return;
     }
     this.menuListActivate = false;
-    this.options.map(option => option.active = false);
+    this.options.map((option) => (option.active = false));
     this.placeholder = this.options[index].label;
     this.options[index].active = true;
     this.activate = index;
@@ -88,8 +100,14 @@ export class SelectComponent implements OnInit {
   }
 
   private watchOutsideClick() {
-    this.globalService.eventBus.subscribe(BpmnEventType.paletteClicked, () => this.closeSelectedList());
-    this.globalService.eventBus.subscribe(BpmnEventType.menuPropertyClick, () => this.closeSelectedList());
-    this.globalService.eventBus.subscribe(BpmnEventType.overviewClick, () => this.closeSelectedList());
+    this.globalService.eventBus.subscribe(BpmnEventType.paletteClicked, () =>
+      this.closeSelectedList()
+    );
+    this.globalService.eventBus.subscribe(BpmnEventType.menuPropertyClick, () =>
+      this.closeSelectedList()
+    );
+    this.globalService.eventBus.subscribe(BpmnEventType.overviewClick, () =>
+      this.closeSelectedList()
+    );
   }
 }

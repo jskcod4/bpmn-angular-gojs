@@ -1,24 +1,45 @@
-import {Component, EventEmitter, HostBinding, HostListener, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {Subscription} from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from "@angular/core";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { Subscription } from "rxjs";
 
-import {BpmnGlobal} from '../../services/bpmn.global';
-import {BpmnEventType} from '../../bpmn/common/bpmn.enum';
-import {BpmnData, BpmnDataFileStorage} from '../../bpmn/common/bpmn.interface';
-import {MenuType, PropertyMenuAnimation, PropertyMenuHandle, PropertyRef, PropertyRefType} from './common';
-import {BpmnSelectItem} from '../select/select.component';
-import {groupBy} from '../../functions';
-import {PaletteCategory} from '../../bpmn/palette/palette.enum';
-import {Part} from 'gojs';
+import { BpmnGlobal } from "../../services/bpmn.global";
+import { BpmnEventType } from "../../bpmn/common/bpmn.enum";
+import {
+  BpmnData,
+  BpmnDataFileStorage,
+} from "../../bpmn/common/bpmn.interface";
+import {
+  MenuType,
+  PropertyMenuAnimation,
+  PropertyMenuHandle,
+  PropertyRef,
+  PropertyRefType,
+} from "./common";
+import { BpmnSelectItem } from "../select/select.component";
+import { groupBy } from "../../functions";
+import { PaletteCategory } from "../../bpmn/palette/palette.enum";
+import { Part } from "gojs";
 
 @Component({
-  selector: 'bpmn-property-menu',
-  templateUrl: './property-menu.component.html',
-  styleUrls: ['./property-menu.component.scss']
+  selector: "bpmn-property-menu",
+  templateUrl: "./property-menu.component.html",
+  styleUrls: ["./property-menu.component.scss"],
 })
-export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit, OnDestroy {
-  @HostBinding('class.bpmn-property-menu') hostClass = true;
-  @HostBinding('class.bpmn-property-menu--open') openMenu = false;
+export class PropertyMenuComponent
+  extends PropertyMenuHandle
+  implements OnInit, OnDestroy
+{
+  @HostBinding("class.bpmn-property-menu") hostClass = true;
+  @HostBinding("class.bpmn-property-menu--open") openMenu = false;
 
   @Input() set opened(value: boolean) {
     this.openMenu = value;
@@ -40,10 +61,7 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
   elements: any[][];
   private bpmDataFileStorage: BpmnDataFileStorage = null;
 
-  constructor(
-    public globalService: BpmnGlobal,
-    private fb: FormBuilder
-  ) {
+  constructor(public globalService: BpmnGlobal, private fb: FormBuilder) {
     super(globalService);
   }
 
@@ -52,13 +70,13 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
   }
 
   get getTitleType(): string {
-    let title = '';
+    let title = "";
     switch (this.type) {
       case MenuType.property:
-        title = 'propertyMenu.componentName';
+        title = "propertyMenu.componentName";
         break;
       case MenuType.attachment:
-        title = 'propertyMenu.componentAttachment';
+        title = "propertyMenu.componentAttachment";
         break;
       default:
         break;
@@ -67,13 +85,26 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
   }
 
   ngOnInit() {
-    this.subOpen = this.open.subscribe(data => {});
-    this.globalService.eventBus.subscribe(BpmnEventType.diagramClick, () => this.setupGeneralActiveMenu());
-    this.globalService.eventBus.subscribe(BpmnEventType.selectElement, () => this.setupLastActiveMenu());
-    this.globalService.eventBus.subscribe(BpmnEventType.changeSelection, () => this.setupLastActiveMenu());
-    this.globalService.eventBus.subscribe(BpmnEventType.selectProperty, () => this.setupPropertyMenu());
-    this.globalService.eventBus.subscribe(BpmnEventType.selectAttachment, () => this.setupAttachmentMenu());
-    this.globalService.eventBus.subscribe(BpmnEventType.clickMenuIconProperty, () => this.onBackIconClick());
+    this.subOpen = this.open.subscribe((data) => {});
+    this.globalService.eventBus.subscribe(BpmnEventType.diagramClick, () =>
+      this.setupGeneralActiveMenu()
+    );
+    this.globalService.eventBus.subscribe(BpmnEventType.selectElement, () =>
+      this.setupLastActiveMenu()
+    );
+    this.globalService.eventBus.subscribe(BpmnEventType.changeSelection, () =>
+      this.setupLastActiveMenu()
+    );
+    this.globalService.eventBus.subscribe(BpmnEventType.selectProperty, () =>
+      this.setupPropertyMenu()
+    );
+    this.globalService.eventBus.subscribe(BpmnEventType.selectAttachment, () =>
+      this.setupAttachmentMenu()
+    );
+    this.globalService.eventBus.subscribe(
+      BpmnEventType.clickMenuIconProperty,
+      () => this.onBackIconClick()
+    );
   }
 
   ngOnDestroy() {
@@ -85,19 +116,19 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
     }
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener("click", ["$event"])
   onClick(evt: MouseEvent) {
     const element = event.target as HTMLElement;
     if (!element.classList.length) {
       return;
     }
-    if (element.classList.contains('bpmn-select-item')) {
+    if (element.classList.contains("bpmn-select-item")) {
       return;
     }
     this.globalService.eventBus.emit(BpmnEventType.menuPropertyClick, evt);
   }
 
-  @HostListener('animationstart', ['$event'])
+  @HostListener("animationstart", ["$event"])
   onAnimationStart(evt: AnimationEvent) {
     if (evt.animationName === PropertyMenuAnimation.propertyIn) {
       this.beforeOpen.emit(true);
@@ -107,7 +138,7 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
     }
   }
 
-  @HostListener('animationend', ['$event'])
+  @HostListener("animationend", ["$event"])
   onAnimationEnd(evt: AnimationEvent) {
     if (evt.animationName === PropertyMenuAnimation.propertyIn) {
       this.statusMenu = true;
@@ -142,7 +173,7 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
       const { data } = this.getActiveSelection();
       const newAttachmentFile: BpmnDataFileStorage = {
         files,
-        data
+        data,
       };
       this.globalService.storageAttachmentFiles(newAttachmentFile);
     }
@@ -164,7 +195,7 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
 
   private setPropertyMenuData(): void {
     const selection = this.getActiveSelection() || this.getDiagramData();
-    let data = (selection.data as BpmnData);
+    let data = selection.data as BpmnData;
     data = this.appendMissingValues(data);
     this.formGroup = this.getForm(data);
     for (const key in this.formGroup.controls) {
@@ -172,25 +203,25 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
         key,
         type: this.getType(key),
         label: this.getLabel(key),
-        options: (this.formGroup.get(key).value as BpmnSelectItem[]),
-        category: null
+        options: this.formGroup.get(key).value as BpmnSelectItem[],
+        category: null,
       });
     }
-    this.elements = groupBy(Array.from(this.labelRef), 'category');
+    this.elements = groupBy(Array.from(this.labelRef), "category");
   }
 
   private setAttachmentData(): void {
     const selection = this.getActiveSelection() || this.getDiagramData();
-    let data = (selection.data as BpmnData);
+    let data = selection.data as BpmnData;
     this.bpmDataFileStorage = this.globalService.getAttachmentFiles(data.key);
     data = this.appendMissingValues(data);
     this.formGroup = this.getFormAttachment(data);
     this.labelRef.add({
-      key: 'file',
-      type: this.getType('file'),
+      key: "file",
+      type: this.getType("file"),
       label: null,
       options: [],
-      category: PaletteCategory.diagram
+      category: PaletteCategory.diagram,
     });
     if (data.category !== PaletteCategory.diagram) {
       for (const key in this.formGroup.controls) {
@@ -200,17 +231,17 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
           label: null,
           options: [],
           category: data.category,
-          customName: data.text || '',
-          code: data.key
+          customName: data.text || "",
+          code: data.key,
         });
       }
     }
-    this.elements = groupBy(Array.from(this.labelRef), 'category');
+    this.elements = groupBy(Array.from(this.labelRef), "category");
   }
 
   private getFormAttachment(data: BpmnData): FormGroup {
     const myForm = this.fb.group({});
-    myForm.addControl('file', new FormControl(data.file));
+    myForm.addControl("file", new FormControl(data.file));
     return myForm;
   }
 
@@ -236,13 +267,19 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
   private updatePropertyMenuData(newData: any): void {
     try {
       if (this.updateDiagramData()) {
-        Object.assign(this.globalService.diagramData, this.wrapperSave(this.globalService.diagramData, newData));
+        Object.assign(
+          this.globalService.diagramData,
+          this.wrapperSave(this.globalService.diagramData, newData)
+        );
         return;
       }
-      this.globalService.diagramInstance.startTransaction('udpateValue');
+      this.globalService.diagramInstance.startTransaction("udpateValue");
       const { data } = this.globalService.diagramInstance.selection.first();
-      this.globalService.diagramInstance.model.assignAllDataProperties(data, this.wrapperSave(data, newData));
-      this.globalService.diagramInstance.commitTransaction('udpateValue');
+      this.globalService.diagramInstance.model.assignAllDataProperties(
+        data,
+        this.wrapperSave(data, newData)
+      );
+      this.globalService.diagramInstance.commitTransaction("udpateValue");
     } catch (e) {
       this.globalService.diagramInstance.rollbackTransaction();
     }
@@ -266,7 +303,7 @@ export class PropertyMenuComponent extends PropertyMenuHandle implements OnInit,
     this.type = MenuType.property;
     this.resetMemoryLocalData();
     this.setPropertyMenuData();
-    this.subValueChange = this.formGroup.valueChanges.subscribe(data => {
+    this.subValueChange = this.formGroup.valueChanges.subscribe((data) => {
       this.updatePropertyMenuData(data);
     });
     this.loading = false;

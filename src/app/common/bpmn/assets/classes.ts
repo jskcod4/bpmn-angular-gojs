@@ -1,20 +1,47 @@
-import * as go from 'gojs';
-import { checkConnection } from '../common/bpmn.functions';
+import * as go from "gojs";
+import { checkConnection } from "../common/bpmn.functions";
 
 export class PoolLink extends go.Link {
-
-  public getLinkPoint(node: go.Node, port: go.GraphObject, spot: go.Spot, from: boolean, ortho: boolean, othernode: go.Node, otherport: go.GraphObject): go.Point {
-    const r = new go.Rect(port.getDocumentPoint(go.Spot.TopLeft), port.getDocumentPoint(go.Spot.BottomRight));
-    const op = super.getLinkPoint(othernode, otherport, spot, from, ortho, node, port);
+  public getLinkPoint(
+    node: go.Node,
+    port: go.GraphObject,
+    spot: go.Spot,
+    from: boolean,
+    ortho: boolean,
+    othernode: go.Node,
+    otherport: go.GraphObject
+  ): go.Point {
+    const r = new go.Rect(
+      port.getDocumentPoint(go.Spot.TopLeft),
+      port.getDocumentPoint(go.Spot.BottomRight)
+    );
+    const op = super.getLinkPoint(
+      othernode,
+      otherport,
+      spot,
+      from,
+      ortho,
+      node,
+      port
+    );
 
     const below = op.y > r.centerY;
     const y = below ? r.bottom : r.top;
-    if (node.category === 'privateProcess') {
+    if (node.category === "privateProcess") {
       if (op.x < r.left) return new go.Point(r.left, y);
       if (op.x > r.right) return new go.Point(r.right, y);
       return new go.Point(op.x, y);
-    } else { // otherwise get the standard link point by calling the base class method
-      return super.getLinkPoint(node, port, spot, from, ortho, othernode, otherport);
+    } else {
+      // otherwise get the standard link point by calling the base class method
+      return super.getLinkPoint(
+        node,
+        port,
+        spot,
+        from,
+        ortho,
+        othernode,
+        otherport
+      );
     }
   }
 
@@ -22,15 +49,21 @@ export class PoolLink extends go.Link {
    * @hidden @internal
    * If there are two links from & to same node... and pool is offset in X from node... the link toPoints collide on pool
    */
-  public computeOtherPoint(othernode: go.Node, otherport: go.GraphObject): go.Point {
+  public computeOtherPoint(
+    othernode: go.Node,
+    otherport: go.GraphObject
+  ): go.Point {
     const op = super.computeOtherPoint(othernode, otherport);
     let node = this.toNode;
     if (node === othernode) node = this.fromNode;
     if (node !== null) {
-      if (othernode.category === 'privateProcess') {
+      if (othernode.category === "privateProcess") {
         op.x = node.getDocumentPoint(go.Spot.MiddleBottom).x;
       } else {
-        if ((node === this.fromNode) !== (node.actualBounds.centerY < othernode.actualBounds.centerY)) {
+        if (
+          (node === this.fromNode) !==
+          node.actualBounds.centerY < othernode.actualBounds.centerY
+        ) {
           op.x -= 1;
         } else {
           op.x += 1;
@@ -44,23 +77,39 @@ export class PoolLink extends go.Link {
    * @hidden @internal
    */
   public getLinkDirection(
-    node: go.Node, port: go.GraphObject, linkpoint: go.Point, spot: go.Spot,
-    from: boolean, ortho: boolean, othernode: go.Node, otherport: go.GraphObject): number {
-    if (node.category === 'privateProcess') {
+    node: go.Node,
+    port: go.GraphObject,
+    linkpoint: go.Point,
+    spot: go.Spot,
+    from: boolean,
+    ortho: boolean,
+    othernode: go.Node,
+    otherport: go.GraphObject
+  ): number {
+    if (node.category === "privateProcess") {
       const p = port.getDocumentPoint(go.Spot.Center);
       const op = otherport.getDocumentPoint(go.Spot.Center);
       const below = op.y > p.y;
       return below ? 90 : 270;
     } else {
-      return super.getLinkDirection.call(this, node, port, linkpoint, spot, from, ortho, othernode, otherport);
+      return super.getLinkDirection.call(
+        this,
+        node,
+        port,
+        linkpoint,
+        spot,
+        from,
+        ortho,
+        othernode,
+        otherport
+      );
     }
   }
 }
 
-
 export class BPMNPanningTool extends go.PanningTool {
   constructor() {
-    super()
+    super();
   }
 
   /**
@@ -68,15 +117,15 @@ export class BPMNPanningTool extends go.PanningTool {
    */
   doActivate() {
     super.doActivate.call(this);
-    this.diagram.currentCursor = 'grabbing';
-  };
+    this.diagram.currentCursor = "grabbing";
+  }
 
   /**
    * Release the mouse and restore the default diagram cursor.
    */
   doDeactivate() {
     super.doDeactivate.call(this);
-    this.diagram.currentCursor = '';
+    this.diagram.currentCursor = "";
   }
 }
 
@@ -94,8 +143,18 @@ export class BPMNLinkingTool extends go.LinkingTool {
     // orthogonal routing during linking
     this.temporaryLink.routing = go.Link.Orthogonal;
     // link validation using the validate methods defined below
-    this.linkValidation = (fromnode: go.Node, fromport: go.GraphObject, tonode: go.Node, toport: go.GraphObject) => {
-      return BPMNLinkingTool.validateSequenceLinkConnection(fromnode, fromport, tonode, toport);
+    this.linkValidation = (
+      fromnode: go.Node,
+      fromport: go.GraphObject,
+      tonode: go.Node,
+      toport: go.GraphObject
+    ) => {
+      return BPMNLinkingTool.validateSequenceLinkConnection(
+        fromnode,
+        fromport,
+        tonode,
+        toport
+      );
     };
   }
 
@@ -107,20 +166,32 @@ export class BPMNLinkingTool extends go.LinkingTool {
   /**
    * Override {@link LinkingTool#insertLink} to do some extra BPMN-specific processing.
    */
-  public insertLink(fromnode: go.Node, fromport: go.GraphObject, tonode: go.Node, toport: go.GraphObject): go.Link | null {
+  public insertLink(
+    fromnode: go.Node,
+    fromport: go.GraphObject,
+    tonode: go.Node,
+    toport: go.GraphObject
+  ): go.Link | null {
     let lsave = null;
     // maybe temporarily change the link data that is copied to create the new link
-    if (BPMNLinkingTool.validateMessageLinkConnection(fromnode, fromport, tonode, toport)) {
+    if (
+      BPMNLinkingTool.validateMessageLinkConnection(
+        fromnode,
+        fromport,
+        tonode,
+        toport
+      )
+    ) {
       lsave = this.archetypeLinkData;
-      this.archetypeLinkData = { category: 'msg' };
+      this.archetypeLinkData = { category: "msg" };
     }
 
     // create the link in the standard manner by calling the base method
     const newlink = super.insertLink(fromnode, fromport, tonode, toport);
 
     // maybe make the label visible
-    if (newlink !== null && fromnode.category === 'gateway') {
-      const label = newlink.findObject('Label');
+    if (newlink !== null && fromnode.category === "gateway") {
+      const label = newlink.findObject("Label");
       if (label !== null) label.visible = true;
     }
 
@@ -134,20 +205,30 @@ export class BPMNLinkingTool extends go.LinkingTool {
   /**
    * Validate that sequence links don't cross subprocess or pool boundaries.
    */
-  public static validateSequenceLinkConnection(fromnode: go.Node, fromport: go.GraphObject, tonode: go.Node, toport: go.GraphObject, type: string = 'link'): boolean {
+  public static validateSequenceLinkConnection(
+    fromnode: go.Node,
+    fromport: go.GraphObject,
+    tonode: go.Node,
+    toport: go.GraphObject,
+    type: string = "link"
+  ): boolean {
     if (fromnode.category === null || tonode.category === null) return true;
 
     // if either node is in a subprocess, both nodes must be in same subprocess (even for Message Flows)
-    if ((fromnode.containingGroup !== null && fromnode.containingGroup.category === 'subprocess') ||
-      (tonode.containingGroup !== null && tonode.containingGroup.category === 'subprocess')) {
+    if (
+      (fromnode.containingGroup !== null &&
+        fromnode.containingGroup.category === "subprocess") ||
+      (tonode.containingGroup !== null &&
+        tonode.containingGroup.category === "subprocess")
+    ) {
       if (fromnode.containingGroup !== tonode.containingGroup) return false;
     }
     // console.log('valid normal')
-    const valid = checkConnection(fromnode,tonode,'',type)
-    if(valid != null){
+    const valid = checkConnection(fromnode, tonode, "", type);
+    if (valid != null) {
       return valid;
     }
-    if (fromnode.containingGroup === tonode.containingGroup) return true;  // a valid Sequence Flow
+    if (fromnode.containingGroup === tonode.containingGroup) return true; // a valid Sequence Flow
     // also check for children in common pool
     const common = fromnode.findCommonContainingGroup(tonode);
     return common != null;
@@ -156,14 +237,28 @@ export class BPMNLinkingTool extends go.LinkingTool {
   /**
    * Validate that message links cross pool boundaries.
    */
-  public static validateMessageLinkConnection(fromnode: go.Node, fromport: go.GraphObject, tonode: go.Node, toport: go.GraphObject, type: string = 'link'): boolean {
+  public static validateMessageLinkConnection(
+    fromnode: go.Node,
+    fromport: go.GraphObject,
+    tonode: go.Node,
+    toport: go.GraphObject,
+    type: string = "link"
+  ): boolean {
     if (fromnode.category === null || tonode.category === null) return true;
 
-    if (fromnode.category === 'privateProcess' || tonode.category === 'privateProcess') return true;
+    if (
+      fromnode.category === "privateProcess" ||
+      tonode.category === "privateProcess"
+    )
+      return true;
 
     // if either node is in a subprocess, both nodes must be in same subprocess (even for Message Flows)
-    if ((fromnode.containingGroup !== null && fromnode.containingGroup.category === 'subprocess') ||
-      (tonode.containingGroup !== null && tonode.containingGroup.category === 'subprocess')) {
+    if (
+      (fromnode.containingGroup !== null &&
+        fromnode.containingGroup.category === "subprocess") ||
+      (tonode.containingGroup !== null &&
+        tonode.containingGroup.category === "subprocess")
+    ) {
       if (fromnode.containingGroup !== tonode.containingGroup) return false;
     }
     // console.log('valid msj')
@@ -172,7 +267,7 @@ export class BPMNLinkingTool extends go.LinkingTool {
     //   return valid;
     // }
 
-    if (fromnode.containingGroup === tonode.containingGroup) return false;  // an invalid Message Flow
+    if (fromnode.containingGroup === tonode.containingGroup) return false; // an invalid Message Flow
 
     // also check if fromnode and tonode are in same pool
     const common = fromnode.findCommonContainingGroup(tonode);
@@ -191,8 +286,19 @@ export class BPMNRelinkingTool extends go.RelinkingTool {
     // orthogonal routing during linking
     this.temporaryLink.routing = go.Link.Orthogonal;
     // link validation using the validate methods defined below
-    this.linkValidation = (fromnode: go.Node, fromport: go.GraphObject, tonode: go.Node, toport: go.GraphObject) => {
-      return BPMNLinkingTool.validateSequenceLinkConnection(fromnode, fromport, tonode, toport, 'relink');
+    this.linkValidation = (
+      fromnode: go.Node,
+      fromport: go.GraphObject,
+      tonode: go.Node,
+      toport: go.GraphObject
+    ) => {
+      return BPMNLinkingTool.validateSequenceLinkConnection(
+        fromnode,
+        fromport,
+        tonode,
+        toport,
+        "relink"
+      );
     };
   }
 
@@ -203,7 +309,12 @@ export class BPMNRelinkingTool extends go.RelinkingTool {
   /**
    * Override {@link RelinkingTool#reconnectLink} to do some extra BPMN-specific processing.
    */
-  public reconnectLink(existinglink: go.Link, newnode: go.Node | null, newport: go.GraphObject | null, toend: boolean): boolean {
+  public reconnectLink(
+    existinglink: go.Link,
+    newnode: go.Node | null,
+    newport: go.GraphObject | null,
+    toend: boolean
+  ): boolean {
     const diagram = existinglink.diagram;
     if (diagram === null) return false;
     const model = diagram.model as go.GraphLinksModel;
@@ -226,25 +337,37 @@ export class BPMNRelinkingTool extends go.RelinkingTool {
       const fromport = existinglink.fromPort;
       const tonode = existinglink.toNode;
       const toport = existinglink.toPort;
-      if (fromnode !== null && fromport !== null && tonode !== null && toport !== null) {
-        diagram.startTransaction('Relink updates');
-        if (BPMNLinkingTool.validateMessageLinkConnection(fromnode, fromport, tonode, toport)) {
+      if (
+        fromnode !== null &&
+        fromport !== null &&
+        tonode !== null &&
+        toport !== null
+      ) {
+        diagram.startTransaction("Relink updates");
+        if (
+          BPMNLinkingTool.validateMessageLinkConnection(
+            fromnode,
+            fromport,
+            tonode,
+            toport
+          )
+        ) {
           // Recreate the link if the category changed, since it is a different class
-          if (existinglink.category !== 'msg') {
-            recreateLinkData(data, 'msg');
+          if (existinglink.category !== "msg") {
+            recreateLinkData(data, "msg");
           }
-        }else if(fromnode.findCommonContainingGroup(tonode) != null) {
-          if (existinglink.category !== '') {
-            recreateLinkData(data, '');
+        } else if (fromnode.findCommonContainingGroup(tonode) != null) {
+          if (existinglink.category !== "") {
+            recreateLinkData(data, "");
           }
         }
 
         // maybe make the label visible
-        if (fromnode.category === 'gateway') {
-          const label = existinglink.findObject('Label');
+        if (fromnode.category === "gateway") {
+          const label = existinglink.findObject("Label");
           if (label !== null) label.visible = true;
         }
-        diagram.commitTransaction('Relink updates');
+        diagram.commitTransaction("Relink updates");
       }
       return true;
     }

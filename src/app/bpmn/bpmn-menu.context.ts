@@ -1,7 +1,3 @@
-// import * as go from 'gojs';
-
-// const $ = go.GraphObject.make;
-
 export enum BpmnMenuType {
   menuButton = "ContextMenuButton",
 }

@@ -1,9 +1,9 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
-*/
+ *  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+ */
 
-import * as go from 'gojs';
-import { BpmnScriptConfig } from '../bpmn.config';
+import * as go from "gojs";
+import { BpmnScriptConfig } from "../bpmn.config";
 
 /**
  * The LinkShiftingTool class lets the user shift the end of a link to be anywhere along the edges of the port;
@@ -34,8 +34,11 @@ export class LinkShiftingTool extends go.Tool {
     h.fill = BpmnScriptConfig.LinkPositionConnectedFill;
     h.stroke = BpmnScriptConfig.LinkPoitionConnectedStroke;
     // h.background = 'lightblue';
-    h.desiredSize = new go.Size(BpmnScriptConfig.LinkPoitionConnectedSize,BpmnScriptConfig.LinkPoitionConnectedSize);
-    h.cursor = 'pointer';
+    h.desiredSize = new go.Size(
+      BpmnScriptConfig.LinkPoitionConnectedSize,
+      BpmnScriptConfig.LinkPoitionConnectedSize
+    );
+    h.cursor = "pointer";
     h.segmentIndex = BpmnScriptConfig.LinkPoitionConnectedToSegmentIndex;
     h.segmentFraction = BpmnScriptConfig.LinkPoitionConnectedToSegmentFraction;
     h.segmentOrientation = go.Link.OrientAlong;
@@ -44,43 +47,60 @@ export class LinkShiftingTool extends go.Tool {
     g.fill = BpmnScriptConfig.LinkPositionConnectedFill;
     g.stroke = BpmnScriptConfig.LinkPoitionConnectedStroke;
     // g.background = 'lightblue';
-    g.desiredSize = new go.Size(BpmnScriptConfig.LinkPoitionConnectedSize,BpmnScriptConfig.LinkPoitionConnectedSize);
-    g.cursor = 'pointer';
+    g.desiredSize = new go.Size(
+      BpmnScriptConfig.LinkPoitionConnectedSize,
+      BpmnScriptConfig.LinkPoitionConnectedSize
+    );
+    g.cursor = "pointer";
     g.segmentIndex = BpmnScriptConfig.LinkPoitionConnectedFromSegmentIndex;
-    g.segmentFraction = BpmnScriptConfig.LinkPoitionConnectedFromSegmentFraction;
+    g.segmentFraction =
+      BpmnScriptConfig.LinkPoitionConnectedFromSegmentFraction;
     g.segmentOrientation = go.Link.OrientAlong;
 
     this._fromHandleArchetype = h;
     this._toHandleArchetype = g;
     this._originalPoints = null;
-    this.name = 'LinkShifting';
+    this.name = "LinkShifting";
   }
 
   /**
    * A small GraphObject used as a shifting handle.
    */
-  get fromHandleArchetype(): go.GraphObject | null { return this._fromHandleArchetype; }
-  set fromHandleArchetype(value: go.GraphObject | null) { this._fromHandleArchetype = value; }
+  get fromHandleArchetype(): go.GraphObject | null {
+    return this._fromHandleArchetype;
+  }
+  set fromHandleArchetype(value: go.GraphObject | null) {
+    this._fromHandleArchetype = value;
+  }
 
   /**
    * A small GraphObject used as a shifting handle.
    */
-  get toHandleArchetype(): go.GraphObject | null { return this._toHandleArchetype; }
-  set toHandleArchetype(value: go.GraphObject | null) { this._toHandleArchetype = value; }
+  get toHandleArchetype(): go.GraphObject | null {
+    return this._toHandleArchetype;
+  }
+  set toHandleArchetype(value: go.GraphObject | null) {
+    this._toHandleArchetype = value;
+  }
 
   /**
    * Show an {@link Adornment} with a reshape handle at each end of the link which allows for shifting of the end points.
    */
   public updateAdornments(part: go.Part): void {
-    if (part === null || !(part instanceof go.Link)) return;  // this tool only applies to Links
+    if (part === null || !(part instanceof go.Link)) return; // this tool only applies to Links
     const link: go.Link = part;
     // show handles if link is selected, remove them if no longer selected
-    let category = 'LinkShiftingFrom';
+    let category = "LinkShiftingFrom";
     let adornment = null;
     if (link.isSelected && !this.diagram.isReadOnly) {
       const selelt = link.selectionObject;
-      if (selelt !== null && link.actualBounds.isReal() && link.isVisible() &&
-        selelt.actualBounds.isReal() && selelt.isVisibleObject()) {
+      if (
+        selelt !== null &&
+        link.actualBounds.isReal() &&
+        link.isVisible() &&
+        selelt.actualBounds.isReal() &&
+        selelt.isVisibleObject()
+      ) {
         const spot = (link as any).computeSpot(true);
         adornment = link.findAdornment(category);
         if (adornment === null) {
@@ -95,12 +115,17 @@ export class LinkShiftingTool extends go.Tool {
     }
     if (adornment === null) link.removeAdornment(category);
 
-    category = 'LinkShiftingTo';
+    category = "LinkShiftingTo";
     adornment = null;
     if (link.isSelected && !this.diagram.isReadOnly) {
       const selelt = link.selectionObject;
-      if (selelt !== null && link.actualBounds.isReal() && link.isVisible() &&
-        selelt.actualBounds.isReal() && selelt.isVisibleObject()) {
+      if (
+        selelt !== null &&
+        link.actualBounds.isReal() &&
+        link.isVisible() &&
+        selelt.actualBounds.isReal() &&
+        selelt.isVisibleObject()
+      ) {
         const spot = (link as any).computeSpot(true);
         adornment = link.findAdornment(category);
         if (adornment === null) {
@@ -125,7 +150,7 @@ export class LinkShiftingTool extends go.Tool {
   public makeAdornment(selelt: go.GraphObject, toend: boolean): go.Adornment {
     const adornment = new go.Adornment();
     adornment.type = go.Panel.Link;
-    const h = (toend ? this.toHandleArchetype : this.fromHandleArchetype);
+    const h = toend ? this.toHandleArchetype : this.fromHandleArchetype;
     if (h !== null) {
       // add a single handle for shifting at one end
       adornment.add(h.copy());
@@ -142,9 +167,16 @@ export class LinkShiftingTool extends go.Tool {
     const diagram = this.diagram;
     if (diagram.isReadOnly || diagram.isModelReadOnly) return false;
     if (!diagram.lastInput.left) return false;
-    let h = this.findToolHandleAt(diagram.firstInput.documentPoint, 'LinkShiftingFrom');
-    if (h === null) h = this.findToolHandleAt(diagram.firstInput.documentPoint, 'LinkShiftingTo');
-    return (h !== null);
+    let h = this.findToolHandleAt(
+      diagram.firstInput.documentPoint,
+      "LinkShiftingFrom"
+    );
+    if (h === null)
+      h = this.findToolHandleAt(
+        diagram.firstInput.documentPoint,
+        "LinkShiftingTo"
+      );
+    return h !== null;
   }
 
   /**
@@ -156,8 +188,15 @@ export class LinkShiftingTool extends go.Tool {
    */
   public doActivate(): void {
     const diagram = this.diagram;
-    let h = this.findToolHandleAt(diagram.firstInput.documentPoint, 'LinkShiftingFrom');
-    if (h === null) h = this.findToolHandleAt(diagram.firstInput.documentPoint, 'LinkShiftingTo');
+    let h = this.findToolHandleAt(
+      diagram.firstInput.documentPoint,
+      "LinkShiftingFrom"
+    );
+    if (h === null)
+      h = this.findToolHandleAt(
+        diagram.firstInput.documentPoint,
+        "LinkShiftingTo"
+      );
     if (h === null) return;
     const ad = h.part as go.Adornment;
     if (ad === null || ad.adornedObject === null) return;
@@ -168,7 +207,7 @@ export class LinkShiftingTool extends go.Tool {
     this._originalPoints = link.points.copy();
     this.startTransaction(this.name);
     diagram.isMouseCaptured = true;
-    diagram.currentCursor = 'pointer';
+    diagram.currentCursor = "pointer";
     this.isActive = true;
   }
 
@@ -179,7 +218,7 @@ export class LinkShiftingTool extends go.Tool {
     this.isActive = false;
     const diagram = this.diagram;
     diagram.isMouseCaptured = false;
-    diagram.currentCursor = '';
+    diagram.currentCursor = "";
     this.stopTransaction();
   }
 
@@ -234,7 +273,7 @@ export class LinkShiftingTool extends go.Tool {
     const ad = this._handle.part as go.Adornment;
     if (ad.adornedObject === null) return;
     const link = ad.adornedObject.part as go.Link;
-    const fromend = ad.category === 'LinkShiftingFrom';
+    const fromend = ad.category === "LinkShiftingFrom";
     let port = null;
     if (fromend) {
       port = link.fromPort;
@@ -245,12 +284,30 @@ export class LinkShiftingTool extends go.Tool {
     // support rotated ports
     const portang = port.getDocumentAngle();
     const center = port.getDocumentPoint(go.Spot.Center);
-    const portb = new go.Rect(port.getDocumentPoint(go.Spot.TopLeft).subtract(center).rotate(-portang).add(center),
-                              port.getDocumentPoint(go.Spot.BottomRight).subtract(center).rotate(-portang).add(center));
-    let lp = link.getLinkPointFromPoint(port.part as go.Node, port, center, pt, fromend);
+    const portb = new go.Rect(
+      port
+        .getDocumentPoint(go.Spot.TopLeft)
+        .subtract(center)
+        .rotate(-portang)
+        .add(center),
+      port
+        .getDocumentPoint(go.Spot.BottomRight)
+        .subtract(center)
+        .rotate(-portang)
+        .add(center)
+    );
+    let lp = link.getLinkPointFromPoint(
+      port.part as go.Node,
+      port,
+      center,
+      pt,
+      fromend
+    );
     lp = lp.copy().subtract(center).rotate(-portang).add(center);
-    const spot = new go.Spot(Math.max(0, Math.min(1, (lp.x - portb.x) / (portb.width || 1))),
-                             Math.max(0, Math.min(1, (lp.y - portb.y) / (portb.height || 1))));
+    const spot = new go.Spot(
+      Math.max(0, Math.min(1, (lp.x - portb.x) / (portb.width || 1))),
+      Math.max(0, Math.min(1, (lp.y - portb.y) / (portb.height || 1)))
+    );
     if (fromend) {
       link.fromSpot = spot;
     } else {

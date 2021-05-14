@@ -2,18 +2,21 @@
   <div class="zoom-main__icons">
     <img
       src="assets/icons/keyboard_arrow_down.svg"
-      [ngClass]="{'is-hidden': !open }"
-      (click)="onArrowDown()">
+      [ngClass]="{ 'is-hidden': !open }"
+      (click)="onArrowDown()"
+    />
     <img
       src="assets/icons/keyboard_arrow_up.svg"
-      [ngClass]="{'is-hidden': open }"
-      (click)="onArrowUp()">
+      [ngClass]="{ 'is-hidden': open }"
+      (click)="onArrowUp()"
+    />
   </div>
   <div class="zoom-main__controls">
     <img
       src="assets/icons/zoom_out_map.svg"
-      [ngClass]="{'is-hidden': !open}"
-      (click)="onRestartZoom()">
+      [ngClass]="{ 'is-hidden': !open }"
+      (click)="onRestartZoom()"
+    />
   </div>
   <ng-content></ng-content>
   <div class="zoom-main__footer">
@@ -24,7 +27,8 @@
       [value]="bindingValue"
       [step]="zoomStep"
       [displayWith]="displayWithThumb"
-      (input)="onSliderInput($event)">
+      (input)="onSliderInput($event)"
+    >
     </mat-slider>
     <nouislider
       *ngIf="!useMaterial"
@@ -32,7 +36,8 @@
       [max]="zoomMax"
       [step]="zoomStep"
       [ngModel]="bindingValue"
-      (update)="onUpdateSlider($event)">
+      (update)="onUpdateSlider($event)"
+    >
     </nouislider>
   </div>
 </div>

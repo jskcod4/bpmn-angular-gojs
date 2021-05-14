@@ -1,8 +1,8 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
-*/
+ *  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+ */
 
-import * as go from 'gojs';
+import * as go from "gojs";
 
 /**
  * This CommandHandler class allows the user to position selected Parts in a diagram
@@ -27,7 +27,7 @@ import * as go from 'gojs';
  * @category Extension
  */
 export class DrawCommandHandler extends go.CommandHandler {
-  private _arrowKeyBehavior: string = 'move';
+  private _arrowKeyBehavior: string = "move";
   private _pasteOffset: go.Point = new go.Point(10, 10);
   private _lastPasteOffset: go.Point = new go.Point(0, 0);
 
@@ -36,10 +36,20 @@ export class DrawCommandHandler extends go.CommandHandler {
    *
    * The default value is "move".
    */
-  get arrowKeyBehavior(): string { return this._arrowKeyBehavior; }
+  get arrowKeyBehavior(): string {
+    return this._arrowKeyBehavior;
+  }
   set arrowKeyBehavior(val: string) {
-    if (val !== 'move' && val !== 'select' && val !== 'scroll' && val !== 'none') {
-      throw new Error('DrawCommandHandler.arrowKeyBehavior must be either "move", "select", "scroll", or "none", not: ' + val);
+    if (
+      val !== "move" &&
+      val !== "select" &&
+      val !== "scroll" &&
+      val !== "none"
+    ) {
+      throw new Error(
+        'DrawCommandHandler.arrowKeyBehavior must be either "move", "select", "scroll", or "none", not: ' +
+          val
+      );
     }
     this._arrowKeyBehavior = val;
   }
@@ -47,9 +57,14 @@ export class DrawCommandHandler extends go.CommandHandler {
   /**
    * Gets or sets the offset at which each repeated {@link #pasteSelection} puts the new copied parts from the clipboard.
    */
-  get pasteOffset(): go.Point { return this._pasteOffset; }
+  get pasteOffset(): go.Point {
+    return this._pasteOffset;
+  }
   set pasteOffset(val: go.Point) {
-    if (!(val instanceof go.Point)) throw new Error('DrawCommandHandler.pasteOffset must be a Point, not: ' + val);
+    if (!(val instanceof go.Point))
+      throw new Error(
+        "DrawCommandHandler.pasteOffset must be a Point, not: " + val
+      );
     this._pasteOffset.set(val);
   }
 
@@ -73,7 +88,7 @@ export class DrawCommandHandler extends go.CommandHandler {
    */
   public alignLeft(): void {
     const diagram = this.diagram;
-    diagram.startTransaction('aligning left');
+    diagram.startTransaction("aligning left");
     let minPosition = Infinity;
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
@@ -83,7 +98,7 @@ export class DrawCommandHandler extends go.CommandHandler {
       if (current instanceof go.Link) return; // skips over go.Link
       current.move(new go.Point(minPosition, current.position.y));
     });
-    diagram.commitTransaction('aligning left');
+    diagram.commitTransaction("aligning left");
   }
 
   /**
@@ -91,7 +106,7 @@ export class DrawCommandHandler extends go.CommandHandler {
    */
   public alignRight(): void {
     const diagram = this.diagram;
-    diagram.startTransaction('aligning right');
+    diagram.startTransaction("aligning right");
     let maxPosition = -Infinity;
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
@@ -100,9 +115,14 @@ export class DrawCommandHandler extends go.CommandHandler {
     });
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
-      current.move(new go.Point(maxPosition - current.actualBounds.width, current.position.y));
+      current.move(
+        new go.Point(
+          maxPosition - current.actualBounds.width,
+          current.position.y
+        )
+      );
     });
-    diagram.commitTransaction('aligning right');
+    diagram.commitTransaction("aligning right");
   }
 
   /**
@@ -110,7 +130,7 @@ export class DrawCommandHandler extends go.CommandHandler {
    */
   public alignTop(): void {
     const diagram = this.diagram;
-    diagram.startTransaction('alignTop');
+    diagram.startTransaction("alignTop");
     let minPosition = Infinity;
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
@@ -120,7 +140,7 @@ export class DrawCommandHandler extends go.CommandHandler {
       if (current instanceof go.Link) return; // skips over go.Link
       current.move(new go.Point(current.position.x, minPosition));
     });
-    diagram.commitTransaction('alignTop');
+    diagram.commitTransaction("alignTop");
   }
 
   /**
@@ -128,18 +148,24 @@ export class DrawCommandHandler extends go.CommandHandler {
    */
   public alignBottom(): void {
     const diagram = this.diagram;
-    diagram.startTransaction('aligning bottom');
+    diagram.startTransaction("aligning bottom");
     let maxPosition = -Infinity;
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
-      const bottomSideLoc = current.actualBounds.y + current.actualBounds.height;
+      const bottomSideLoc =
+        current.actualBounds.y + current.actualBounds.height;
       maxPosition = Math.max(bottomSideLoc, maxPosition);
     });
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
-      current.move(new go.Point(current.actualBounds.x, maxPosition - current.actualBounds.height));
+      current.move(
+        new go.Point(
+          current.actualBounds.x,
+          maxPosition - current.actualBounds.height
+        )
+      );
     });
-    diagram.commitTransaction('aligning bottom');
+    diagram.commitTransaction("aligning bottom");
   }
 
   /**
@@ -149,15 +175,20 @@ export class DrawCommandHandler extends go.CommandHandler {
     const diagram = this.diagram;
     const firstSelection = diagram.selection.first();
     if (!firstSelection) return;
-    diagram.startTransaction('aligning Center X');
-    const centerX = firstSelection.actualBounds.x + firstSelection.actualBounds.width / 2;
+    diagram.startTransaction("aligning Center X");
+    const centerX =
+      firstSelection.actualBounds.x + firstSelection.actualBounds.width / 2;
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
-      current.move(new go.Point(centerX - current.actualBounds.width / 2, current.actualBounds.y));
+      current.move(
+        new go.Point(
+          centerX - current.actualBounds.width / 2,
+          current.actualBounds.y
+        )
+      );
     });
-    diagram.commitTransaction('aligning Center X');
+    diagram.commitTransaction("aligning Center X");
   }
-
 
   /**
    * Aligns selected parts at the y-value of the center point of the first selected part.
@@ -166,15 +197,20 @@ export class DrawCommandHandler extends go.CommandHandler {
     const diagram = this.diagram;
     const firstSelection = diagram.selection.first();
     if (!firstSelection) return;
-    diagram.startTransaction('aligning Center Y');
-    const centerY = firstSelection.actualBounds.y + firstSelection.actualBounds.height / 2;
+    diagram.startTransaction("aligning Center Y");
+    const centerY =
+      firstSelection.actualBounds.y + firstSelection.actualBounds.height / 2;
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
-      current.move(new go.Point(current.actualBounds.x, centerY - current.actualBounds.height / 2));
+      current.move(
+        new go.Point(
+          current.actualBounds.x,
+          centerY - current.actualBounds.height / 2
+        )
+      );
     });
-    diagram.commitTransaction('aligning Center Y');
+    diagram.commitTransaction("aligning Center Y");
   }
-
 
   /**
    * Aligns selected parts top-to-bottom in order of the order selected.
@@ -182,7 +218,7 @@ export class DrawCommandHandler extends go.CommandHandler {
    */
   public alignColumn(distance: number): void {
     const diagram = this.diagram;
-    diagram.startTransaction('align Column');
+    diagram.startTransaction("align Column");
     if (distance === undefined) distance = 0; // for aligning edge to edge
     distance = parseFloat(distance.toString());
     const selectedParts = new Array();
@@ -193,11 +229,12 @@ export class DrawCommandHandler extends go.CommandHandler {
     for (let i = 0; i < selectedParts.length - 1; i++) {
       const current = selectedParts[i];
       // adds distance specified between parts
-      const curBottomSideLoc = current.actualBounds.y + current.actualBounds.height + distance;
+      const curBottomSideLoc =
+        current.actualBounds.y + current.actualBounds.height + distance;
       const next = selectedParts[i + 1];
       next.move(new go.Point(current.actualBounds.x, curBottomSideLoc));
     }
-    diagram.commitTransaction('align Column');
+    diagram.commitTransaction("align Column");
   }
 
   /**
@@ -208,7 +245,7 @@ export class DrawCommandHandler extends go.CommandHandler {
     if (distance === undefined) distance = 0; // for aligning edge to edge
     distance = parseFloat(distance.toString());
     const diagram = this.diagram;
-    diagram.startTransaction('align Row');
+    diagram.startTransaction("align Row");
     const selectedParts = new Array();
     diagram.selection.each((current) => {
       if (current instanceof go.Link) return; // skips over go.Link
@@ -217,11 +254,12 @@ export class DrawCommandHandler extends go.CommandHandler {
     for (let i = 0; i < selectedParts.length - 1; i++) {
       const current = selectedParts[i];
       // adds distance specified between parts
-      const curRightSideLoc = current.actualBounds.x + current.actualBounds.width + distance;
+      const curRightSideLoc =
+        current.actualBounds.x + current.actualBounds.width + distance;
       const next = selectedParts[i + 1];
       next.move(new go.Point(curRightSideLoc, current.actualBounds.y));
     }
-    diagram.commitTransaction('align Row');
+    diagram.commitTransaction("align Row");
   }
 
   /**
@@ -246,14 +284,13 @@ export class DrawCommandHandler extends go.CommandHandler {
   public rotate(angle: number): void {
     if (angle === undefined) angle = 90;
     const diagram = this.diagram;
-    diagram.startTransaction('rotate ' + angle.toString());
+    diagram.startTransaction("rotate " + angle.toString());
     diagram.selection.each((current) => {
       if (current instanceof go.Link || current instanceof go.Group) return; // skips over Links and Groups
       current.angle += angle;
     });
-    diagram.commitTransaction('rotate ' + angle.toString());
+    diagram.commitTransaction("rotate " + angle.toString());
   }
-
 
   /**
    * This implements custom behaviors for arrow key keyboard events.
@@ -265,15 +302,20 @@ export class DrawCommandHandler extends go.CommandHandler {
     const e = diagram.lastInput;
 
     // determines the function of the arrow keys
-    if (e.key === 'Up' || e.key === 'Down' || e.key === 'Left' || e.key === 'Right') {
+    if (
+      e.key === "Up" ||
+      e.key === "Down" ||
+      e.key === "Left" ||
+      e.key === "Right"
+    ) {
       const behavior = this.arrowKeyBehavior;
-      if (behavior === 'none') {
+      if (behavior === "none") {
         // no-op
         return;
-      } else if (behavior === 'select') {
+      } else if (behavior === "select") {
         this._arrowKeySelect();
         return;
-      } else if (behavior === 'move') {
+      } else if (behavior === "move") {
         this._arrowKeyMove();
         return;
       }
@@ -289,8 +331,12 @@ export class DrawCommandHandler extends go.CommandHandler {
    */
   private _getAllParts(): Array<any> {
     const allParts = new Array();
-    this.diagram.nodes.each((node) => { allParts.push(node); });
-    this.diagram.parts.each((part) => { allParts.push(part); });
+    this.diagram.nodes.each((node) => {
+      allParts.push(node);
+    });
+    this.diagram.parts.each((part) => {
+      allParts.push(part);
+    });
     // note that this ignores Links
     return allParts;
   }
@@ -313,19 +359,27 @@ export class DrawCommandHandler extends go.CommandHandler {
       hdistance = cellsize.width;
       vdistance = cellsize.height;
     }
-    diagram.startTransaction('arrowKeyMove');
+    diagram.startTransaction("arrowKeyMove");
     diagram.selection.each((part) => {
-      if (e.key === 'Up') {
-        part.move(new go.Point(part.actualBounds.x, part.actualBounds.y - vdistance));
-      } else if (e.key === 'Down') {
-        part.move(new go.Point(part.actualBounds.x, part.actualBounds.y + vdistance));
-      } else if (e.key === 'Left') {
-        part.move(new go.Point(part.actualBounds.x - hdistance, part.actualBounds.y));
-      } else if (e.key === 'Right') {
-        part.move(new go.Point(part.actualBounds.x + hdistance, part.actualBounds.y));
+      if (e.key === "Up") {
+        part.move(
+          new go.Point(part.actualBounds.x, part.actualBounds.y - vdistance)
+        );
+      } else if (e.key === "Down") {
+        part.move(
+          new go.Point(part.actualBounds.x, part.actualBounds.y + vdistance)
+        );
+      } else if (e.key === "Left") {
+        part.move(
+          new go.Point(part.actualBounds.x - hdistance, part.actualBounds.y)
+        );
+      } else if (e.key === "Right") {
+        part.move(
+          new go.Point(part.actualBounds.x + hdistance, part.actualBounds.y)
+        );
       }
     });
-    diagram.commitTransaction('arrowKeyMove');
+    diagram.commitTransaction("arrowKeyMove");
   }
 
   /**
@@ -338,13 +392,13 @@ export class DrawCommandHandler extends go.CommandHandler {
     // arrow keys + shift selects the additional part in the specified direction
     // arrow keys + control toggles the selection of the additional part
     let nextPart = null;
-    if (e.key === 'Up') {
+    if (e.key === "Up") {
       nextPart = this._findNearestPartTowards(270);
-    } else if (e.key === 'Down') {
+    } else if (e.key === "Down") {
       nextPart = this._findNearestPartTowards(90);
-    } else if (e.key === 'Left') {
+    } else if (e.key === "Left") {
       nextPart = this._findNearestPartTowards(180);
-    } else if (e.key === 'Right') {
+    } else if (e.key === "Right") {
       nextPart = this._findNearestPartTowards(0);
     }
     if (nextPart !== null) {
@@ -370,19 +424,21 @@ export class DrawCommandHandler extends go.CommandHandler {
     const originalPoint = originalPart.actualBounds.center;
     const allParts = this._getAllParts();
     let closestDistance = Infinity;
-    let closest = originalPart;  // if no parts meet the criteria, the same part remains selected
+    let closest = originalPart; // if no parts meet the criteria, the same part remains selected
 
     for (let i = 0; i < allParts.length; i++) {
       const nextPart = allParts[i];
-      if (nextPart === originalPart) continue;  // skips over currently selected part
+      if (nextPart === originalPart) continue; // skips over currently selected part
       const nextPoint = nextPart.actualBounds.center;
       const angle = originalPoint.directionPoint(nextPoint);
       const anglediff = this._angleCloseness(angle, dir);
-      if (anglediff <= 45) {  // if this part's center is within the desired direction's sector,
+      if (anglediff <= 45) {
+        // if this part's center is within the desired direction's sector,
         let distance = originalPoint.distanceSquaredPoint(nextPoint);
-        distance *= 1 + Math.sin(anglediff * Math.PI / 180);  // the more different from the intended angle, the further it is
-        if (distance < closestDistance) {  // and if it's closer than any other part,
-          closestDistance = distance;      // remember it as a better choice
+        distance *= 1 + Math.sin((anglediff * Math.PI) / 180); // the more different from the intended angle, the further it is
+        if (distance < closestDistance) {
+          // and if it's closer than any other part,
+          closestDistance = distance; // remember it as a better choice
           closest = nextPart;
         }
       }
@@ -391,7 +447,10 @@ export class DrawCommandHandler extends go.CommandHandler {
   }
 
   private _angleCloseness(a: number, dir: number): number {
-    return Math.min(Math.abs(dir - a), Math.min(Math.abs(dir + 360 - a), Math.abs(dir - 360 - a)));
+    return Math.min(
+      Math.abs(dir - a),
+      Math.min(Math.abs(dir + 360 - a), Math.abs(dir - 360 - a))
+    );
   }
 
   /**
@@ -414,4 +473,3 @@ export class DrawCommandHandler extends go.CommandHandler {
     return coll;
   }
 }
-
