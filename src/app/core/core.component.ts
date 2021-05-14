@@ -57,7 +57,7 @@ export class CoreComponent implements OnInit {
 
   @Input() minResolution: number = 769;
 
-  lang: Language = Language.portuguese;
+  lang: Language = Language.english;
   bpmn: BpmnScript;
   openPaletteSidebar: boolean = false;
   topPaletteSidebar: number = 0;
