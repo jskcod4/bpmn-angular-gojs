@@ -1,7 +1,20 @@
-import { Component, EventEmitter, Output, Input, ViewChild, ContentChildren, QueryList, HostBinding, HostListener, Self, ElementRef } from '@angular/core';
-import { NgxDropzoneService } from '../ngx-dropzone.service';
-import { coerceBooleanProperty, coerceNumberProperty } from '../helpers';
-import { NgxDropzonePreviewComponent } from '../ngx-dropzone-preview/ngx-dropzone-preview.component';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  ViewChild,
+  ContentChildren,
+  QueryList,
+  HostBinding,
+  HostListener,
+  Self,
+  ElementRef,
+} from "@angular/core";
+
+import { NgxDropzoneService } from "../ngx-dropzone.service";
+import { coerceBooleanProperty, coerceNumberProperty } from "../helpers";
+import { NgxDropzonePreviewComponent } from "../ngx-dropzone-preview/ngx-dropzone-preview.component";
 
 export interface NgxDropzoneChangeEvent {
   source: NgxDropzoneComponent;
@@ -10,18 +23,15 @@ export interface NgxDropzoneChangeEvent {
 }
 
 @Component({
-  selector: 'ngx-dropzone, [ngx-dropzone]',
-  templateUrl: './ngx-dropzone.component.html',
-  styleUrls: ['./ngx-dropzone.component.scss'],
-  providers: [NgxDropzoneService]
+  selector: "ngx-dropzone, [ngx-dropzone]",
+  templateUrl: "./ngx-dropzone.component.html",
+  styleUrls: ["./ngx-dropzone.component.scss"],
+  providers: [NgxDropzoneService],
 })
 export class NgxDropzoneComponent {
+  constructor(@Self() private service: NgxDropzoneService) {}
 
-  constructor(
-    @Self() private service: NgxDropzoneService
-  ) { }
-
-  @HostBinding('style.opacity') opacity: number = 1;
+  @HostBinding("style.opacity") opacity: number = 1;
 
   /** A list of the content-projected preview children. */
   @ContentChildren(NgxDropzonePreviewComponent, { descendants: true })
@@ -32,7 +42,7 @@ export class NgxDropzoneComponent {
   }
 
   /** A template reference to the native file input element. */
-  @ViewChild('fileInput', { static: false }) _fileInput: ElementRef;
+  @ViewChild("fileInput", { static: false }) _fileInput: ElementRef;
 
   /** Emitted when any files were added or rejected. */
   @Output() readonly change = new EventEmitter<NgxDropzoneChangeEvent>();
@@ -40,11 +50,11 @@ export class NgxDropzoneComponent {
   @Output() dragEnter = new EventEmitter<void>();
 
   /** Set the accepted file types. Defaults to '*'. */
-  @Input() accept = '*';
+  @Input() accept = "*";
 
   /** Disable any user interaction with the component. */
   @Input()
-  @HostBinding('class.ngx-dz-disabled')
+  @HostBinding("class.ngx-dz-disabled")
   get disabled(): boolean {
     return this._disabled;
   }
@@ -81,7 +91,7 @@ export class NgxDropzoneComponent {
 
   /** Allow the dropzone container to expand vertically. */
   @Input()
-  @HostBinding('class.expandable')
+  @HostBinding("class.expandable")
   get expandable(): boolean {
     return this._expandable;
   }
@@ -90,18 +100,18 @@ export class NgxDropzoneComponent {
   }
   private _expandable: boolean = false;
 
-  @HostBinding('class.ngx-dz-hovered')
+  @HostBinding("class.ngx-dz-hovered")
   _isHovered = false;
 
   /** Show the native OS file explorer to select files. */
-  @HostListener('click')
+  @HostListener("click")
   showFileSelector() {
     if (!this.disabled) {
       (this._fileInput.nativeElement as HTMLInputElement).click();
     }
   }
 
-  @HostListener('dragenter', ['$event'])
+  @HostListener("dragenter", ["$event"])
   _onDragEnter(event) {
     if (this.disabled) {
       return;
@@ -111,7 +121,7 @@ export class NgxDropzoneComponent {
     this.opacity = this.opacityOnDrag;
   }
 
-  @HostListener('dragover', ['$event'])
+  @HostListener("dragover", ["$event"])
   _onDragOver(event) {
     if (this.disabled) {
       return;
@@ -121,13 +131,13 @@ export class NgxDropzoneComponent {
     this._isHovered = true;
   }
 
-  @HostListener('dragleave')
+  @HostListener("dragleave")
   _onDragLeave() {
     this._isHovered = false;
     this.opacity = 1;
   }
 
-  @HostListener('drop', ['$event'])
+  @HostListener("drop", ["$event"])
   _onDrop(event) {
     if (this.disabled) {
       return;
@@ -144,19 +154,24 @@ export class NgxDropzoneComponent {
     this.handleFileDrop(files);
 
     // Reset the native file input element to allow selecting the same file again
-    this._fileInput.nativeElement.value = '';
+    this._fileInput.nativeElement.value = "";
 
     // fix(#32): Prevent the default event behaviour which caused the change event to emit twice.
     this.preventDefault(event);
   }
 
   private handleFileDrop(files: FileList) {
-    const result = this.service.parseFileList(files, this.accept, this.maxFileSize, this.multiple);
+    const result = this.service.parseFileList(
+      files,
+      this.accept,
+      this.maxFileSize,
+      this.multiple
+    );
 
     this.change.next({
       addedFiles: result.addedFiles,
       rejectedFiles: result.rejectedFiles,
-      source: this
+      source: this,
     });
   }
 
