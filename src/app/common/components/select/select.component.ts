@@ -9,9 +9,10 @@ import {
   Renderer2,
 } from "@angular/core";
 import { AbstractControl } from "@angular/forms";
+import { DOCUMENT } from "@angular/common";
+
 import { BpmnGlobal } from "../../services/bpmn.global";
 import { BpmnEventType } from "../../bpmn/common/bpmn.enum";
-import { DOCUMENT } from "@angular/common";
 
 export interface BpmnSelectItem {
   label: string;

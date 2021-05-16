@@ -1,10 +1,13 @@
 import { Component, HostBinding, Input, OnInit } from "@angular/core";
+
+import * as go from "gojs";
 import { TranslateService } from "@ngx-translate/core";
+
 import { environment } from "src/environments/environment";
 import { Language } from "../common/data/bpmn.enum";
 
-import * as go from "gojs";
 import { BpmnScript } from "../common/bpmn";
+
 import {
   activityPalette,
   dataObjectPalette,
@@ -15,6 +18,7 @@ import {
   startEventPalette,
   subProcessPalette,
 } from "../common/bpmn/palette/palette.seeds";
+
 import { PaletteSeed } from "../common/bpmn/palette/palette.interface";
 import { BpmnGlobal } from "../common/services/bpmn.global";
 import { BpmnEventType, EventDimension } from "../common/bpmn/common/bpmn.enum";
@@ -23,6 +27,7 @@ import { BpmnConfig, BpmnSource } from "../common/bpmn/common/bpmn.interface";
 import { LaneResizingTool } from "../common/bpmn/common/bpmn.classes";
 import { BpmnContextMenu } from "../common/components/context-menu/common/context.menu.interface";
 import { getDiagramMenu } from "../common/bpmn/menu-context";
+
 import {
   EventBorderDataButton,
   EventEndDataButton,
@@ -52,10 +57,14 @@ import { BpmnScriptConfig } from "../common/bpmn/bpmn.config";
   styleUrls: ["./core.component.scss"],
 })
 export class CoreComponent implements OnInit {
-  @HostBinding("class.grid-container") hostClass: boolean = true;
-  @HostBinding("class.only-read") onlyRead: boolean = false;
+  @HostBinding("class.grid-container")
+  hostClass = true;
 
-  @Input() minResolution: number = 769;
+  @HostBinding("class.only-read")
+  onlyRead = false;
+
+  @Input()
+  minResolution = 769;
 
   lang: Language = Language.english;
   bpmn: BpmnScript;
@@ -77,20 +86,27 @@ export class CoreComponent implements OnInit {
 
   ngOnInit() {
     this.initBpmn();
+    this.watchEvents();
+  }
+
+  private watchEvents() {
     this.bpmnGlobal.eventBus.subscribe(BpmnEventType.selectElement, () => {
       this.bpmnGlobal.openMenu().subscribe();
     });
+
     this.bpmnGlobal.eventBus.subscribe(BpmnEventType.selectProperty, () => {
       this.bpmnGlobal.openMenu().subscribe();
     });
+
     this.bpmnGlobal.eventBus.subscribe(BpmnEventType.selectAttachment, () => {
       this.bpmnGlobal.openMenu().subscribe();
     });
   }
 
   private initBpmn(): void {
-    const config: BpmnConfig = BpmnScriptConfig;
+    const config = BpmnScriptConfig;
     config.diagramIsReadOnly = this.isReadOnly();
+
     this.bpmn = new BpmnScript(this.bpmnGlobal.eventBus, config);
     this.bpmn.init();
     this.bpmnGlobal.diagramInstance = this.bpmn.myDiagram;
@@ -99,6 +115,7 @@ export class CoreComponent implements OnInit {
       0,
       new LaneResizingTool(this.bpmn)
     );
+
     this.setPalettes();
     this.setContextMenu();
     this.bpmnGlobal.createMenu();
@@ -160,11 +177,12 @@ export class CoreComponent implements OnInit {
           default:
             break;
         }
+
         if (!this.hasElementOpen()) {
           this.openMenuHover(paletteHover, source);
-
           return;
         }
+
         if (!this.elementIsEqualCategory(data.category)) {
           if (data.notHoverChange) {
             return;

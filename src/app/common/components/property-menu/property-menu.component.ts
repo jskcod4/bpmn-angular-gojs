@@ -8,15 +8,19 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
+
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+
 import { Subscription } from "rxjs";
 
 import { BpmnGlobal } from "../../services/bpmn.global";
 import { BpmnEventType } from "../../bpmn/common/bpmn.enum";
+
 import {
   BpmnData,
   BpmnDataFileStorage,
 } from "../../bpmn/common/bpmn.interface";
+
 import {
   MenuType,
   PropertyMenuAnimation,
@@ -24,6 +28,7 @@ import {
   PropertyRef,
   PropertyRefType,
 } from "./common";
+
 import { BpmnSelectItem } from "../select/select.component";
 import { groupBy } from "../../functions";
 import { PaletteCategory } from "../../bpmn/palette/palette.enum";
@@ -38,17 +43,28 @@ export class PropertyMenuComponent
   extends PropertyMenuHandle
   implements OnInit, OnDestroy
 {
-  @HostBinding("class.bpmn-property-menu") hostClass = true;
-  @HostBinding("class.bpmn-property-menu--open") openMenu = false;
+  @HostBinding("class.bpmn-property-menu")
+  hostClass = true;
 
-  @Input() set opened(value: boolean) {
+  @HostBinding("class.bpmn-property-menu--open")
+  openMenu = false;
+
+  @Input()
+  set opened(value: boolean) {
     this.openMenu = value;
   }
 
-  @Output() beforeOpen = new EventEmitter<boolean>();
-  @Output() open = new EventEmitter<boolean>();
-  @Output() beforeClose = new EventEmitter<boolean>();
-  @Output() close = new EventEmitter<boolean>();
+  @Output()
+  beforeOpen = new EventEmitter<boolean>();
+
+  @Output()
+  open = new EventEmitter<boolean>();
+
+  @Output()
+  beforeClose = new EventEmitter<boolean>();
+
+  @Output()
+  close = new EventEmitter<boolean>();
 
   statusMenu = false;
   subOpen: Subscription;
@@ -197,7 +213,9 @@ export class PropertyMenuComponent
     const selection = this.getActiveSelection() || this.getDiagramData();
     let data = selection.data as BpmnData;
     data = this.appendMissingValues(data);
+
     this.formGroup = this.getForm(data);
+
     for (const key in this.formGroup.controls) {
       this.labelRef.add({
         key,
@@ -207,6 +225,7 @@ export class PropertyMenuComponent
         category: null,
       });
     }
+
     this.elements = groupBy(Array.from(this.labelRef), "category");
   }
 
@@ -215,6 +234,7 @@ export class PropertyMenuComponent
     let data = selection.data as BpmnData;
     this.bpmDataFileStorage = this.globalService.getAttachmentFiles(data.key);
     data = this.appendMissingValues(data);
+
     this.formGroup = this.getFormAttachment(data);
     this.labelRef.add({
       key: "file",
@@ -223,6 +243,7 @@ export class PropertyMenuComponent
       options: [],
       category: PaletteCategory.diagram,
     });
+
     if (data.category !== PaletteCategory.diagram) {
       for (const key in this.formGroup.controls) {
         this.labelRef.add({

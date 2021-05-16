@@ -20,27 +20,48 @@ import { BpmnEventType } from "../../bpmn/common/bpmn.enum";
   styleUrls: ["./zoom.component.scss"],
 })
 export class ZoomComponent implements OnInit, OnDestroy {
-  @HostBinding("class.wrapper-zoom") wrapperDiv: boolean = true;
-  @HostBinding("class.wrapper-zoom--bottom-right")
-  positionBottomRight: boolean = true;
-  @HostBinding("class.wrapper-zoom--collapsed") isCollapsed: boolean = true;
-  @HostBinding("class.wrapper-zoom--left-in") leftIn: boolean = false;
-  @HostBinding("class.wrapper-zoom--left-out") leftOut: boolean = false;
+  @HostBinding("class.wrapper-zoom")
+  wrapperDiv = true;
 
-  @Input() open: boolean = true;
-  @Input() zoomMax: number = 2;
-  @Input() zoomMin: number = 0.3;
-  @Input() zoomStep: number = 0.01;
-  @Input() value: number = 1;
-  @Input() useElement: "material" | "nouslider" = "nouslider";
-  @Input() set isMinimized(value: boolean) {
+  @HostBinding("class.wrapper-zoom--bottom-right")
+  positionBottomRight = true;
+
+  @HostBinding("class.wrapper-zoom--collapsed")
+  isCollapsed = true;
+
+  @HostBinding("class.wrapper-zoom--left-in")
+  leftIn = false;
+
+  @HostBinding("class.wrapper-zoom--left-out")
+  leftOut = false;
+
+  @Input()
+  open = true;
+
+  @Input()
+  zoomMax = 2;
+
+  @Input()
+  zoomMin = 0.3;
+
+  @Input()
+  zoomStep = 0.01;
+
+  @Input()
+  value = 1;
+
+  @Input()
+  useElement: "material" | "nouslider" = "nouslider";
+
+  @Input()
+  set isMinimized(value: boolean) {
     if (value) {
       this.open = !value;
     }
     this.isCollapsed = value;
   }
 
-  bindingValue: number = 1;
+  bindingValue = 1;
   sliderControl: FormControl;
   timerNouSlider;
   subBeforeMenuOpen: Subscription;

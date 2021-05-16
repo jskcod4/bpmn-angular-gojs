@@ -5,6 +5,7 @@ import {
   Input,
   EventEmitter,
 } from "@angular/core";
+
 import { BpmnContextMenu } from "./common/context.menu.interface";
 import { BpmnGlobal } from "../../services/bpmn.global";
 import { BpmnEventType } from "../../bpmn/common/bpmn.enum";
