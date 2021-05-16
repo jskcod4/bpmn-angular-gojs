@@ -1,5 +1,5 @@
-import { CircleMenu } from './circleMenu';
-import { BpmnConfig } from '../common/bpmn.interface';
+import { CircleMenu } from "./circleMenu";
+import { BpmnConfig } from "../common/bpmn.interface";
 
 export interface AccionesPrincipales {
   actividad: boolean;
@@ -25,41 +25,47 @@ export interface SimbolosMenuCircular {
 }
 
 export interface CircleMenuDataArray {
-  key?: number | string,
-  category: string,
-  text?: string,
-  item?: string,
-  eventDimension?: number,
-  eventType?: number,
-  taskType?: number,
-  gatewayType?: number,
-  isAdHoc?: boolean,
-  isText?: boolean
-  size?: string,
-  sizeIcon?: string,
-  sizeInner?: string,
-  _data?: any,
-  data?: any,
-  isGroup?: boolean,
-  isParallel?: boolean,
-  isLoop?: boolean,
-  isSequencial?: boolean,
-  tooltip?: string,
-  sizeType?: string,
-  font?: string,
-  sizeC1?: string,
-  sizeC2?: string,
-  isCall?: boolean,
-  isSubProcess?: boolean,
-  subprocessType?: number
+  key?: number | string;
+  category: string;
+  text?: string;
+  item?: string;
+  eventDimension?: number;
+  eventType?: number;
+  taskType?: number;
+  gatewayType?: number;
+  isAdHoc?: boolean;
+  isText?: boolean;
+  size?: string;
+  sizeIcon?: string;
+  sizeInner?: string;
+  _data?: any;
+  data?: any;
+  isGroup?: boolean;
+  isParallel?: boolean;
+  isLoop?: boolean;
+  isSequencial?: boolean;
+  tooltip?: string;
+  sizeType?: string;
+  font?: string;
+  sizeC1?: string;
+  sizeC2?: string;
+  isCall?: boolean;
+  isSubProcess?: boolean;
+  subprocessType?: number;
 }
 
 export interface CircleMenuSeed {
-  templates: CircleMenuButtonTemplate[],
-  dataArray: CircleMenuDataArray[]
+  templates: CircleMenuButtonTemplate[];
+  dataArray: CircleMenuDataArray[];
 }
 
 export interface CircleMenuButtonTemplate {
-  key: string,
-  function: (go: any, $: any, circleMenu?: CircleMenu, Type?: string, config?: BpmnConfig) => any,
+  key: string;
+  function: (
+    go: any,
+    $: any,
+    circleMenu?: CircleMenu,
+    Type?: string,
+    config?: BpmnConfig
+  ) => any;
 }
